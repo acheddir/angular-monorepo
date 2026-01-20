@@ -69,26 +69,67 @@ pnpm start
 
 ## Generating Domain Libraries
 
-Use the custom domain schematic to scaffold new feature domains:
+Custom schematics are available via the `@tools/schematics` package.
+
+### Full Domain Generation
+
+Generate a complete domain with feature, data, and types libraries:
 
 ```bash
-# Generate a complete domain with feature, data, and types
-pnpm generate:domain --app=demo --domain=products --name=list
+ng g @tools/schematics:domain --app=demo --domain=products --name=list
+# or short form
+ng g domain --app=demo --domain=products --name=list
 ```
 
 This creates:
 
-- `libs/demo/products/feature-list/` - Feature component with routing
+- `libs/demo/products/feature-list/` - Feature component
 - `libs/demo/products/data/` - Data service for API calls
 - `libs/demo/products/types/` - TypeScript interfaces
 
+### Individual Library Generation
+
+Generate single libraries within a domain:
+
+```bash
+# Feature library (feature-*)
+ng g @tools/schematics:feature --app=demo --domain=products --name=detail
+
+# Data access library
+ng g @tools/schematics:data --app=demo --domain=products
+
+# Types library
+ng g @tools/schematics:types --app=demo --domain=products
+
+# UI component library (ui-*)
+ng g @tools/schematics:ui --app=demo --domain=products --name=card
+
+# Utility library (util-*)
+ng g @tools/schematics:util --app=demo --domain=products --name=formatters
+```
+
+### Available Schematics
+
+| Schematic | Alias | Description                        | Output Path                           |
+| --------- | ----- | ---------------------------------- | ------------------------------------- |
+| `domain`  | `d`   | Full domain (feature, data, types) | `libs/{app}/{domain}/*`               |
+| `feature` | `f`   | Single feature library             | `libs/{app}/{domain}/feature-{name}/` |
+| `data`    | `da`  | Data access library                | `libs/{app}/{domain}/data/`           |
+| `types`   | `t`   | Types/models library               | `libs/{app}/{domain}/types/`          |
+| `ui`      | `u`   | UI component library               | `libs/{app}/{domain}/ui-{name}/`      |
+| `util`    | `ut`  | Utility library                    | `libs/{app}/{domain}/util-{name}/`    |
+
 ### Generated Path Aliases
 
-The schematic automatically adds tsconfig path aliases:
+Each schematic automatically adds tsconfig path aliases:
 
-- `@demo/products/list` → feature library
-- `@demo/products/data` → data library
-- `@demo/products/types` → types library
+| Library Type | Path Alias                    |
+| ------------ | ----------------------------- |
+| feature      | `@{app}/{domain}/{name}`      |
+| data         | `@{app}/{domain}/data`        |
+| types        | `@{app}/{domain}/types`       |
+| ui           | `@{app}/{domain}/ui-{name}`   |
+| util         | `@{app}/{domain}/util-{name}` |
 
 ### Existing Path Aliases
 
@@ -124,20 +165,21 @@ This template uses [Sheriff](https://github.com/softarc-consulting/sheriff) to e
 
 ## Available Scripts
 
-| Script                 | Description                       |
-| ---------------------- | --------------------------------- |
-| `pnpm start`           | Start development server          |
-| `pnpm build`           | Build for production              |
-| `pnpm test`            | Run tests with Vitest             |
-| `pnpm test:watch`      | Run tests in watch mode           |
-| `pnpm test:ui`         | Run tests with Vitest UI          |
-| `pnpm lint`            | Run ESLint                        |
-| `pnpm lint:fix`        | Fix ESLint issues                 |
-| `pnpm format`          | Format with Prettier              |
-| `pnpm format:check`    | Check formatting                  |
-| `pnpm check`           | Run lint, format check, and tests |
-| `pnpm generate:domain` | Generate a new domain             |
-| `pnpm modules:list`    | List Sheriff modules              |
+| Script                  | Description                       |
+| ----------------------- | --------------------------------- |
+| `pnpm start`            | Start development server          |
+| `pnpm build`            | Build for production              |
+| `pnpm test`             | Run tests with Vitest             |
+| `pnpm test:watch`       | Run tests in watch mode           |
+| `pnpm test:ui`          | Run tests with Vitest UI          |
+| `pnpm lint`             | Run ESLint                        |
+| `pnpm lint:fix`         | Fix ESLint issues                 |
+| `pnpm format`           | Format with Prettier              |
+| `pnpm format:check`     | Check formatting                  |
+| `pnpm check`            | Run lint, format check, and tests |
+| `pnpm generate:domain`  | Generate a new domain             |
+| `pnpm build:schematics` | Build custom schematics           |
+| `pnpm modules:list`     | List Sheriff modules              |
 
 ## Configuration Files
 

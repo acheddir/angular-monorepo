@@ -140,84 +140,6 @@
         }
       }
     },
-    "products-types": {
-      "projectType": "library",
-      "root": "libs/demo/products/types",
-      "sourceRoot": "libs/demo/products/types/src",
-      "prefix": "demo",
-      "architect": {
-        "build": {
-          "builder": "@angular/build:ng-packagr",
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/demo/products/types/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "libs/demo/products/types/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular/build:unit-test",
-          "options": {
-            "tsConfig": "libs/demo/products/types/tsconfig.spec.json"
-          }
-        }
-      }
-    },
-    "products-data": {
-      "projectType": "library",
-      "root": "libs/demo/products/data",
-      "sourceRoot": "libs/demo/products/data/src",
-      "prefix": "demo",
-      "architect": {
-        "build": {
-          "builder": "@angular/build:ng-packagr",
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/demo/products/data/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "libs/demo/products/data/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular/build:unit-test",
-          "options": {
-            "tsConfig": "libs/demo/products/data/tsconfig.spec.json"
-          }
-        }
-      }
-    },
-    "feature-list": {
-      "projectType": "library",
-      "root": "libs/demo/products/feature-list",
-      "sourceRoot": "libs/demo/products/feature-list/src",
-      "prefix": "demo",
-      "architect": {
-        "build": {
-          "builder": "@angular/build:ng-packagr",
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/demo/products/feature-list/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "libs/demo/products/feature-list/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular/build:unit-test",
-          "options": {
-            "tsConfig": "libs/demo/products/feature-list/tsconfig.spec.json"
-          }
-        }
-      }
-    },
     "ui-layouts": {
       "projectType": "library",
       "root": "libs/demo/layouts/ui-layouts",
@@ -299,6 +221,6 @@
   },
   "cli": {
     "analytics": false,
-    "schematicCollections": ["./tools/schematics"]
+    "schematicCollections": ["@tools/schematics"]
   }
 }

@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "SchematicsFeature",
+  "title": "Feature Schematic",
+  "type": "object",
+  "description": "Generate a single feature library within a domain",
+  "properties": {
+    "app": {
+      "type": "string",
+      "description": "Target app name (e.g., demo)",
+      "x-prompt": "What is the target app name?"
+    },
+    "domain": {
+      "type": "string",
+      "description": "Domain name (e.g., products, users)",
+      "x-prompt": "What is the domain name?"
+    },
+    "name": {
+      "type": "string",
+      "description": "Feature name (e.g., list, detail)",
+      "x-prompt": "What is the feature name?"
+    }
+  },
+  "required": ["app", "domain", "name"]
+}

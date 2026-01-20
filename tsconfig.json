@@ -12,7 +12,8 @@
       "@demo/home/welcome": ["./libs/demo/home/feature-welcome/src/public-api.ts"],
       "@demo/layouts": ["./libs/demo/layouts/ui-layouts/src/public-api.ts"],
       "@demo/layouts/navigation": ["./libs/demo/layouts/ui-navigation/src/public-api.ts"],
-      "@demo/home/hero": ["./libs/demo/home/ui-hero/src/public-api.ts"]
+      "@demo/home/hero": ["./libs/demo/home/ui-hero/src/public-api.ts"],
+      "@tools/schematics": ["./tools/schematics/public-api.ts"]
     },
     "skipLibCheck": true,
     "isolatedModules": true,

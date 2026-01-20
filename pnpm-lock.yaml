@@ -87,6 +87,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4.1.12
         version: 4.1.18
+      '@tools/schematics':
+        specifier: file:./tools/schematics
+        version: file:tools/schematics(chokidar@5.0.0)
       '@types/node':
         specifier: ^25.0.9
         version: 25.0.9
@@ -1677,6 +1680,9 @@ packages:
 
   '@tailwindcss/postcss@4.1.18':
     resolution: {integrity: sha512-Ce0GFnzAOuPyfV5SxjXGn0CubwGcuDB0zcdaPuCSzAa/2vII24JTkH+I6jcbXLb1ctjZMZZI6OjDaLPJQL1S0g==}
+
+  '@tools/schematics@file:tools/schematics':
+    resolution: {directory: tools/schematics, type: directory}
 
   '@tufjs/canonical-json@2.0.0':
     resolution: {integrity: sha512-yVtV8zsdo8qFHe+/3kw81dSLyF7D576A5cCFCi4X7B39tWT7SekaEFUnvnWJHz+9qO7qJTah1JbrDjWKqFtdWA==}
@@ -5362,6 +5368,15 @@ snapshots:
       '@tailwindcss/oxide': 4.1.18
       postcss: 8.5.6
       tailwindcss: 4.1.18
+
+  '@tools/schematics@file:tools/schematics(chokidar@5.0.0)':
+    dependencies:
+      '@angular-devkit/core': 21.1.0(chokidar@5.0.0)
+      '@angular-devkit/schematics': 21.1.0(chokidar@5.0.0)
+      '@schematics/angular': 21.1.0(chokidar@5.0.0)
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - chokidar
 
   '@tufjs/canonical-json@2.0.0': {}
 

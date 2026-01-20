@@ -20,7 +20,7 @@
     "check": "pnpm lint && pnpm format:check && pnpm test",
     "prepare": "husky",
     "generate:domain": "ng generate domain",
-    "build:schematics": "tsc -p tools/schematics/tsconfig.json && cp -r tools/schematics/domain/files tools/schematics/dist/domain/"
+    "build:schematics": "tsc -p tools/schematics/tsconfig.json && for dir in domain feature data types ui util; do [ -d tools/schematics/$dir/files ] && cp -r tools/schematics/$dir/files tools/schematics/dist/$dir/; done"
   },
   "author": "Abderrahman Cheddir",
   "license": "MIT",
@@ -29,6 +29,7 @@
     "pnpm": ">=10.0.0"
   },
   "devDependencies": {
+    "@tools/schematics": "file:./tools/schematics",
     "@angular-devkit/core": "^21.1.0",
     "@angular-devkit/schematics": "^21.1.0",
     "@angular-eslint/builder": "^21.1.0",

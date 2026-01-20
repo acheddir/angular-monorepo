@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "SchematicsData",
+  "title": "Data Schematic",
+  "type": "object",
+  "description": "Generate a single data access library within a domain",
+  "properties": {
+    "app": {
+      "type": "string",
+      "description": "Target app name (e.g., demo)",
+      "x-prompt": "What is the target app name?"
+    },
+    "domain": {
+      "type": "string",
+      "description": "Domain name (e.g., products, users)",
+      "x-prompt": "What is the domain name?"
+    }
+  },
+  "required": ["app", "domain"]
+}

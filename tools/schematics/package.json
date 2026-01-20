@@ -1,5 +1,5 @@
 {
-  "name": "angular-template-schematics",
+  "name": "@tools/schematics",
   "version": "1.0.0",
   "description": "Custom Angular schematics for domain-driven library generation",
   "schematics": "./collection.json",
