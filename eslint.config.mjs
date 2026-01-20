@@ -8,7 +8,15 @@ const __dirname = process.cwd();
 
 export default [
   {
-    ignores: ["dist/**", "node_modules/**", "coverage/**", ".angular/**", "eslint.config.mjs"],
+    ignores: [
+      "dist/**",
+      "node_modules/**",
+      "coverage/**",
+      ".angular/**",
+      "eslint.config.mjs",
+      "tools/schematics/**",
+      "scripts/**",
+    ],
   },
   eslint.configs.recommended,
   ...tseslint.configs.strictTypeChecked.map((config) => ({

@@ -1,5 +1,5 @@
 {
-  "name": "angular-template",
+  "name": "angular-monorepo",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -14,11 +14,13 @@
     "lint-staged": "lint-staged",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "sheriff:modules": "pnpm exec sheriff list 2>&1",
+    "modules:list": "pnpm exec sheriff list 2>&1",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "pnpm lint && pnpm format:check && pnpm test",
-    "prepare": "husky"
+    "prepare": "husky",
+    "generate:domain": "ng generate domain",
+    "build:schematics": "tsc -p tools/schematics/tsconfig.json && cp -r tools/schematics/domain/files tools/schematics/dist/domain/"
   },
   "author": "Abderrahman Cheddir",
   "license": "MIT",
@@ -27,6 +29,8 @@
     "pnpm": ">=10.0.0"
   },
   "devDependencies": {
+    "@angular-devkit/core": "^21.1.0",
+    "@angular-devkit/schematics": "^21.1.0",
     "@angular-eslint/builder": "^21.1.0",
     "@angular-eslint/eslint-plugin": "^21.1.0",
     "@angular-eslint/eslint-plugin-template": "^21.1.0",

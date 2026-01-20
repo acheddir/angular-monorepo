@@ -1,0 +1,11 @@
+{
+  "$schema": "../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "domain": {
+      "description": "Generate a domain with feature, data, and types libraries",
+      "factory": "./dist/domain/index#domain",
+      "schema": "./domain/schema.json",
+      "aliases": ["d"]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "angular-template-schematics",
+  "version": "1.0.0",
+  "description": "Custom Angular schematics for domain-driven library generation",
+  "schematics": "./collection.json",
+  "dependencies": {
+    "@angular-devkit/core": "^21.1.0",
+    "@angular-devkit/schematics": "^21.1.0",
+    "@schematics/angular": "^21.1.0",
+    "typescript": "^5.9.0"
+  }
+}

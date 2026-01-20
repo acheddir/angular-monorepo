@@ -54,14 +54,14 @@ export const config: SheriffConfig = {
           "feature-<name>": {
             src: ["domain:<domain>", "type:feature"],
           },
-          "ui-<name>": {
-            src: ["domain:<domain>", "type:ui"],
-          },
           data: {
             src: ["domain:<domain>", "type:data"],
           },
           types: {
             src: ["domain:<domain>", "type:types"],
+          },
+          "ui-<name>": {
+            src: ["domain:<domain>", "type:ui"],
           },
           "util-<name>": {
             src: ["domain:<domain>", "type:util"],

@@ -9,7 +9,10 @@
     "noFallthroughCasesInSwitch": true,
     "paths": {
       "@demo/shell": ["./libs/demo/shell/feature-shell/src/public-api.ts"],
-      "@demo/home/welcome": ["./libs/demo/home/feature-welcome/src/public-api.ts"]
+      "@demo/home/welcome": ["./libs/demo/home/feature-welcome/src/public-api.ts"],
+      "@demo/products/types": ["./libs/demo/products/types/src/public-api.ts"],
+      "@demo/products/data": ["./libs/demo/products/data/src/public-api.ts"],
+      "@demo/products/list": ["./libs/demo/products/feature-list/src/public-api.ts"]
     },
     "skipLibCheck": true,
     "isolatedModules": true,
