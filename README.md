@@ -52,8 +52,15 @@ pnpm start
 │   └── demo/                   # Application libraries
 │       ├── shell/              # Shell feature (app bootstrapping)
 │       │   └── feature-shell/  # Root component and routing
+│       ├── layouts/            # Layout components domain
+│       │   ├── ui-layouts/     # Header, Main, Footer components
+│       │   └── ui-navigation/  # Navigation component
+│       ├── home/               # Home domain
+│       │   ├── feature-welcome/# Welcome page feature
+│       │   └── ui-hero/        # Hero section component
 │       └── <domain>/           # Domain-specific libraries
 │           ├── feature-*/      # Feature libraries (smart components)
+│           ├── ui-*/           # UI libraries (presentational components)
 │           ├── data/           # Data access (services, state)
 │           └── types/          # TypeScript interfaces/types
 └── tools/
@@ -82,6 +89,16 @@ The schematic automatically adds tsconfig path aliases:
 - `@demo/products/list` → feature library
 - `@demo/products/data` → data library
 - `@demo/products/types` → types library
+
+### Existing Path Aliases
+
+| Alias                      | Library                                  |
+| -------------------------- | ---------------------------------------- |
+| `@demo/shell`              | Shell feature (root component)           |
+| `@demo/layouts`            | Layout components (Header, Main, Footer) |
+| `@demo/layouts/navigation` | Navigation component                     |
+| `@demo/home/welcome`       | Welcome page feature                     |
+| `@demo/home/hero`          | Hero section component                   |
 
 ## Architecture
 
