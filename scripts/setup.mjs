@@ -37,6 +37,10 @@ function question(prompt) {
   });
 }
 
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 function validateAppName(name) {
   if (!name || name.trim().length === 0) {
     return "App name cannot be empty";
@@ -83,9 +87,12 @@ function replaceInFile(filePath, oldName, newName) {
   let newContent = content
     // Replace @demo/ imports and paths
     .replace(new RegExp(`@${oldName}/`, "g"), `@${newName}/`)
-    // Replace demo/ paths
+    // Replace demo/ paths (with trailing slash)
     .replace(new RegExp(`apps/${oldName}/`, "g"), `apps/${newName}/`)
     .replace(new RegExp(`libs/${oldName}/`, "g"), `libs/${newName}/`)
+    // Replace demo paths at end of strings (e.g., "root": "apps/demo")
+    .replace(new RegExp(`apps/${oldName}"`, "g"), `apps/${newName}"`)
+    .replace(new RegExp(`libs/${oldName}"`, "g"), `libs/${newName}"`)
     // Replace prefix in configs
     .replace(new RegExp(`"prefix": "${oldName}"`, "g"), `"prefix": "${newName}"`)
     .replace(new RegExp(`prefix: \\["${oldName}"\\]`, "g"), `prefix: ["${newName}"]`)
@@ -97,11 +104,20 @@ function replaceInFile(filePath, oldName, newName) {
     .replace(new RegExp(`ng build ${oldName}`, "g"), `ng build ${newName}`)
     .replace(new RegExp(`build:${oldName}`, "g"), `build:${newName}`)
     .replace(new RegExp(`pnpm build:${oldName}`, "g"), `pnpm build:${newName}`)
-    // Replace selector prefixes in component templates and configs
+    // Replace selector prefixes in component templates and configs (HTML tags)
     .replace(new RegExp(`<${oldName}-`, "g"), `<${newName}-`)
     .replace(new RegExp(`</${oldName}-`, "g"), `</${newName}-`)
+    // Replace selector strings in TypeScript decorators (e.g., selector: "demo-root")
+    .replace(new RegExp(`"${oldName}-`, "g"), `"${newName}-`)
+    // Replace standalone demo references in selectors (e.g., <demo-root></demo-root>)
+    .replace(new RegExp(`<${oldName}>`, "g"), `<${newName}>`)
+    .replace(new RegExp(`</${oldName}>`, "g"), `</${newName}>`)
     // Replace in comments and documentation
-    .replace(new RegExp(`/${oldName}/`, "g"), `/${newName}/`);
+    .replace(new RegExp(`/${oldName}/`, "g"), `/${newName}/`)
+    // Replace signal/title values like signal("demo")
+    .replace(new RegExp(`signal\\("${oldName}"\\)`, "g"), `signal("${newName}")`)
+    // Replace capitalized Demo in templates (e.g., "@2025 Demo" footer)
+    .replace(new RegExp(`\\b${capitalize(oldName)}\\b`, "g"), capitalize(newName));
 
   if (content !== newContent) {
     writeFileSync(filePath, newContent, "utf-8");

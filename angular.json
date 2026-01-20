@@ -217,6 +217,84 @@
           }
         }
       }
+    },
+    "ui-layouts": {
+      "projectType": "library",
+      "root": "libs/demo/layouts/ui-layouts",
+      "sourceRoot": "libs/demo/layouts/ui-layouts/src",
+      "prefix": "demo",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/demo/layouts/ui-layouts/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/demo/layouts/ui-layouts/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "libs/demo/layouts/ui-layouts/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "ui-navigation": {
+      "projectType": "library",
+      "root": "libs/demo/layouts/ui-navigation",
+      "sourceRoot": "libs/demo/layouts/ui-navigation/src",
+      "prefix": "demo",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/demo/layouts/ui-navigation/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/demo/layouts/ui-navigation/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "libs/demo/layouts/ui-navigation/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "ui-hero": {
+      "projectType": "library",
+      "root": "libs/demo/home/ui-hero",
+      "sourceRoot": "libs/demo/home/ui-hero/src",
+      "prefix": "demo",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/demo/home/ui-hero/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/demo/home/ui-hero/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "libs/demo/home/ui-hero/tsconfig.spec.json"
+          }
+        }
+      }
     }
   },
   "cli": {

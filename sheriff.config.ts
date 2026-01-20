@@ -39,6 +39,11 @@ export const config: SheriffConfig = {
             src: ["type:shell"],
           },
         },
+        layouts: {
+          "ui-<name>": {
+            src: ["type:ui"],
+          },
+        },
         shared: {
           types: {
             src: ["domain:shared", "type:types"],
@@ -77,7 +82,7 @@ export const config: SheriffConfig = {
     "domain:shared": [sameTag],
     // --- types
     "type:app": ["*"],
-    "type:shell": ["type:feature", "type:util"],
+    "type:shell": ["type:feature", "type:ui", "type:util"],
     "type:feature": [sameTag, "type:data", "type:ui", "type:util", "type:types", "type:contract"],
     "type:data": [sameTag, "type:ui", "type:util", "type:types", "type:contract"],
     "type:ui": [sameTag, "type:util", "type:types", "type:contract"],
