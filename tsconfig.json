@@ -8,12 +8,8 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@demo/shell": [
-        "./libs/demo/shell/feature-shell/src/public-api.ts"
-      ],
-      "@demo/home/welcome": [
-        "./libs/demo/home/feature-welcome/src/public-api.ts"
-      ]
+      "@demo/shell": ["./libs/demo/shell/feature-shell/src/public-api.ts"],
+      "@demo/home/welcome": ["./libs/demo/home/feature-welcome/src/public-api.ts"]
     },
     "skipLibCheck": true,
     "isolatedModules": true,
@@ -25,14 +21,8 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
-    "types": [
-      "node",
-      "vitest/globals"
-    ],
-    "lib": [
-      "ES2022",
-      "dom"
-    ],
+    "types": ["node", "vitest/globals"],
+    "lib": ["ES2022", "dom"],
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
