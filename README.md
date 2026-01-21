@@ -1,6 +1,6 @@
 # Angular Monorepo Starter
 
-A production-ready Angular monorepo template with domain-driven architecture, strict linting, and module boundary enforcement.
+A production-ready Angular monorepo starter template with domain-driven architecture, strict linting, and module boundary enforcement.
 
 ## Features
 
