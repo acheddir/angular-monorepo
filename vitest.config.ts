@@ -4,14 +4,14 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   resolve: {
     alias: {
-      "@demo/shell": resolve(__dirname, "libs/demo/shell/feature-shell/src/public-api.ts"),
-      "@demo/home/welcome": resolve(__dirname, "libs/demo/home/feature-welcome/src/public-api.ts"),
-      "@demo/layouts": resolve(__dirname, "libs/demo/layouts/ui-layouts/src/public-api.ts"),
-      "@demo/layouts/navigation": resolve(
+      "@app/shell": resolve(__dirname, "libs/app/shell/feature-shell/src/public-api.ts"),
+      "@app/home/welcome": resolve(__dirname, "libs/app/home/feature-welcome/src/public-api.ts"),
+      "@app/layouts": resolve(__dirname, "libs/app/layouts/ui-layouts/src/public-api.ts"),
+      "@app/layouts/navigation": resolve(
         __dirname,
-        "libs/demo/layouts/ui-navigation/src/public-api.ts"
+        "libs/app/layouts/ui-navigation/src/public-api.ts"
       ),
-      "@demo/home/hero": resolve(__dirname, "libs/demo/home/ui-hero/src/public-api.ts"),
+      "@app/home/hero": resolve(__dirname, "libs/app/home/ui-hero/src/public-api.ts"),
     },
   },
   test: {

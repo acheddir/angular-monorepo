@@ -83,17 +83,36 @@ function addPathAliasToTsConfig(tree: Tree, aliasPath: string, targetPath: strin
 }
 
 export function util(options: UtilSchematicSchema): Rule {
-  return (tree: Tree, _context: SchematicContext) => {
-    const { app, domain, name } = options;
+  return async (tree: Tree, _context: SchematicContext) => {
+    const { app, name, shared } = options;
+    let { domain } = options;
+
+    // Prompt for domain only if NOT shared and domain is NOT provided
+    if (!shared && !domain) {
+      const inquirer = await import("inquirer");
+      const answers = await inquirer.default.prompt([
+        {
+          type: "input",
+          name: "domain",
+          message: "Which domain does this utility belong to?",
+        },
+      ]);
+      domain = answers.domain;
+    }
+
     const utilName = dasherize(name);
-    const domainName = dasherize(domain);
-    const projectPath = `libs/${app}/${domainName}/util-${utilName}`;
+    const domainName = domain ? dasherize(domain) : "";
+
+    // Conditional path based on shared flag
+    const projectPath = shared
+      ? `libs/${app}/shared/util-${utilName}`
+      : `libs/${app}/modules/${domainName}/util-${utilName}`;
     const projectName = `util-${utilName}`;
     const className = classify(name);
     const fileName = utilName;
 
-    // Calculate relative path depth (libs/app/domain/util-name = 4 levels)
-    const relativePath = calculateRelativePath(4);
+    // Calculate relative path depth (libs/app/modules/domain/util-name = 5 levels, libs/app/shared/util-name = 4 levels)
+    const relativePath = calculateRelativePath(shared ? 4 : 5);
 
     const templateSource = apply(url("./files/util-__name__"), [
       template({
@@ -101,7 +120,7 @@ export function util(options: UtilSchematicSchema): Rule {
         name: utilName,
         className,
         fileName,
-        domain: domainName,
+        domain: shared ? "shared" : domainName,
         app,
         relativePath,
         prefix: app,
@@ -112,12 +131,13 @@ export function util(options: UtilSchematicSchema): Rule {
     // Add to angular.json
     addProjectToAngularJson(tree, projectName, projectPath, app);
 
+    // Conditional alias path
+    const aliasPath = shared
+      ? `@${app}/shared/util-${utilName}`
+      : `@${app}/${domainName}/util-${utilName}`;
+
     // Add path alias
-    addPathAliasToTsConfig(
-      tree,
-      `@${app}/${domainName}/util-${utilName}`,
-      `./${projectPath}/src/public-api.ts`
-    );
+    addPathAliasToTsConfig(tree, aliasPath, `./${projectPath}/src/public-api.ts`);
 
     return mergeWith(templateSource);
   };

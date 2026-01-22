@@ -1,4 +1,5 @@
 export interface TypesSchematicSchema {
   app: string;
-  domain: string;
+  domain?: string;
+  shared?: boolean;
 }

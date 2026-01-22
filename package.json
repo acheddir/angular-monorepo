@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "ng": "ng",
-    "start": "ng serve demo",
-    "build": "pnpm build:demo",
-    "build:demo": "ng build demo",
+    "start": "ng serve app",
+    "build": "pnpm build:app",
+    "build:app": "ng build app",
+    "build:schematics": "tsc -p tools/schematics/tsconfig.json && for dir in domain feature data types ui util; do [ -d tools/schematics/$dir/files ] && cp -r tools/schematics/$dir/files tools/schematics/dist/$dir/; done",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
@@ -19,8 +20,7 @@
     "format:check": "prettier --check .",
     "check": "pnpm lint && pnpm format:check && pnpm test",
     "prepare": "husky",
-    "generate:domain": "ng generate domain",
-    "build:schematics": "tsc -p tools/schematics/tsconfig.json && for dir in domain feature data types ui util; do [ -d tools/schematics/$dir/files ] && cp -r tools/schematics/$dir/files tools/schematics/dist/$dir/; done"
+    "generate:domain": "ng generate domain"
   },
   "author": "Abderrahman Cheddir",
   "license": "MIT",
@@ -32,6 +32,7 @@
     "@tools/schematics": "file:./tools/schematics",
     "@angular-devkit/core": "^21.1.0",
     "@angular-devkit/schematics": "^21.1.0",
+    "inquirer": "^13.2.1",
     "@angular-eslint/builder": "^21.1.0",
     "@angular-eslint/eslint-plugin": "^21.1.0",
     "@angular-eslint/eslint-plugin-template": "^21.1.0",

@@ -30,7 +30,7 @@ cd YOUR_REPO
 node scripts/setup.mjs
 ```
 
-The setup script will interactively rename the project from `demo` to your chosen name.
+The setup script will interactively rename the project from `app` to your chosen name.
 
 ### 3. Install and Run
 
@@ -43,26 +43,32 @@ pnpm start
 
 ```
 ├── apps/
-│   └── demo/                   # Main application
+│   └── app/                    # Main application
 │       ├── src/
 │       │   ├── main.ts         # Application entry point
 │       │   └── styles.css      # Global styles
 │       └── public/             # Static assets
 ├── libs/
-│   └── demo/                   # Application libraries
+│   └── app/                    # Application libraries
 │       ├── shell/              # Shell feature (app bootstrapping)
 │       │   └── feature-shell/  # Root component and routing
 │       ├── layouts/            # Layout components domain
 │       │   ├── ui-layouts/     # Header, Main, Footer components
 │       │   └── ui-navigation/  # Navigation component
-│       ├── home/               # Home domain
-│       │   ├── feature-welcome/# Welcome page feature
-│       │   └── ui-hero/        # Hero section component
-│       └── <domain>/           # Domain-specific libraries
-│           ├── feature-*/      # Feature libraries (smart components)
-│           ├── ui-*/           # UI libraries (presentational components)
-│           ├── data/           # Data access (services, state)
-│           └── types/          # TypeScript interfaces/types
+│       ├── shared/             # Shared/cross-cutting libraries
+│       │   ├── components/     # Shared UI components
+│       │   │   └── ui-*/       # Reusable UI components
+│       │   ├── util-*/         # Shared utility functions
+│       │   └── types/          # Shared TypeScript types
+│       └── modules/            # Domain-specific modules
+│           └── <domain>/       # Each business domain
+│               ├── feature-*/  # Feature libraries (smart components)
+│               ├── ui-*/       # UI libraries (presentational components)
+│               ├── data/       # Data access (services, state)
+│               ├── types/      # TypeScript interfaces/types
+│               └── util-*/     # Utility libraries
+├── docs/
+│   └── ADRs/                   # Architecture Decision Records
 └── tools/
     └── schematics/             # Custom Angular schematics
 ```
@@ -76,16 +82,25 @@ Custom schematics are available via the `@tools/schematics` package.
 Generate a complete domain with feature, data, and types libraries:
 
 ```bash
-ng g @tools/schematics:domain --app=demo --domain=products --name=list
+ng g @tools/schematics:domain --app=app --domain=products --name=list
 # or short form
-ng g domain --app=demo --domain=products --name=list
+ng g domain --app=app --domain=products --name=list
 ```
 
 This creates:
 
-- `libs/demo/products/feature-list/` - Feature component
-- `libs/demo/products/data/` - Data service for API calls
-- `libs/demo/products/types/` - TypeScript interfaces
+- `libs/app/modules/products/feature-list/` - Feature component
+- `libs/app/modules/products/data/` - Data service for API calls
+- `libs/app/modules/products/types/` - TypeScript interfaces
+
+### Shared vs Domain Libraries
+
+Libraries can be generated in two locations:
+
+1. **Domain-specific** (default): Under `libs/{app}/modules/{domain}/`
+2. **Shared**: Under `libs/{app}/shared/` using the `--shared` flag
+
+Use `--shared` for components, utilities, and types that are reusable across multiple domains.
 
 ### Individual Library Generation
 
@@ -93,35 +108,46 @@ Generate single libraries within a domain:
 
 ```bash
 # Feature library (feature-*)
-ng g @tools/schematics:feature --app=demo --domain=products --name=detail
+ng g @tools/schematics:feature --app=app --domain=products --name=detail
 
 # Data access library
-ng g @tools/schematics:data --app=demo --domain=products
+ng g @tools/schematics:data --app=app --domain=products
 
-# Types library
-ng g @tools/schematics:types --app=demo --domain=products
+# Types library (domain-specific)
+ng g @tools/schematics:types --app=app --domain=products
 
-# UI component library (ui-*)
-ng g @tools/schematics:ui --app=demo --domain=products --name=card
+# Types library (shared across domains)
+ng g @tools/schematics:types --app=app --shared
 
-# Utility library (util-*)
-ng g @tools/schematics:util --app=demo --domain=products --name=formatters
+# UI component library (domain-specific)
+ng g @tools/schematics:ui --app=app --domain=products --name=card
+
+# UI component library (shared across domains)
+ng g @tools/schematics:ui --app=app --name=button --shared
+
+# Utility library (domain-specific)
+ng g @tools/schematics:util --app=app --domain=products --name=formatters
+
+# Utility library (shared across domains)
+ng g @tools/schematics:util --app=app --name=date-helpers --shared
 ```
 
 ### Available Schematics
 
-| Schematic | Alias | Description                        | Output Path                           |
-| --------- | ----- | ---------------------------------- | ------------------------------------- |
-| `domain`  | `d`   | Full domain (feature, data, types) | `libs/{app}/{domain}/*`               |
-| `feature` | `f`   | Single feature library             | `libs/{app}/{domain}/feature-{name}/` |
-| `data`    | `da`  | Data access library                | `libs/{app}/{domain}/data/`           |
-| `types`   | `t`   | Types/models library               | `libs/{app}/{domain}/types/`          |
-| `ui`      | `u`   | UI component library               | `libs/{app}/{domain}/ui-{name}/`      |
-| `util`    | `ut`  | Utility library                    | `libs/{app}/{domain}/util-{name}/`    |
+| Schematic | Alias | Description                        | Output Path (Default)                         | Output Path (--shared)                    |
+| --------- | ----- | ---------------------------------- | --------------------------------------------- | ----------------------------------------- |
+| `domain`  | `d`   | Full domain (feature, data, types) | `libs/{app}/modules/{domain}/*`               | N/A                                       |
+| `feature` | `f`   | Single feature library             | `libs/{app}/modules/{domain}/feature-{name}/` | N/A                                       |
+| `data`    | `da`  | Data access library                | `libs/{app}/modules/{domain}/data/`           | N/A                                       |
+| `types`   | `t`   | Types/models library               | `libs/{app}/modules/{domain}/types/`          | `libs/{app}/shared/types/`                |
+| `ui`      | `u`   | UI component library               | `libs/{app}/modules/{domain}/ui-{name}/`      | `libs/{app}/shared/components/ui-{name}/` |
+| `util`    | `ut`  | Utility library                    | `libs/{app}/modules/{domain}/util-{name}/`    | `libs/{app}/shared/util-{name}/`          |
 
 ### Generated Path Aliases
 
 Each schematic automatically adds tsconfig path aliases:
+
+**Domain-specific Libraries (default):**
 
 | Library Type | Path Alias                    |
 | ------------ | ----------------------------- |
@@ -131,15 +157,23 @@ Each schematic automatically adds tsconfig path aliases:
 | ui           | `@{app}/{domain}/ui-{name}`   |
 | util         | `@{app}/{domain}/util-{name}` |
 
+**Shared Libraries (with --shared flag):**
+
+| Library Type | Path Alias                  |
+| ------------ | --------------------------- |
+| types        | `@{app}/shared/types`       |
+| ui           | `@{app}/shared/ui-{name}`   |
+| util         | `@{app}/shared/util-{name}` |
+
 ### Existing Path Aliases
 
-| Alias                      | Library                                  |
-| -------------------------- | ---------------------------------------- |
-| `@demo/shell`              | Shell feature (root component)           |
-| `@demo/layouts`            | Layout components (Header, Main, Footer) |
-| `@demo/layouts/navigation` | Navigation component                     |
-| `@demo/home/welcome`       | Welcome page feature                     |
-| `@demo/home/hero`          | Hero section component                   |
+| Alias                     | Library                                  |
+| ------------------------- | ---------------------------------------- |
+| `@app/shell`              | Shell feature (root component)           |
+| `@app/layouts`            | Layout components (Header, Main, Footer) |
+| `@app/layouts/navigation` | Navigation component                     |
+| `@app/home/welcome`       | Welcome page feature                     |
+| `@app/home/hero`          | Hero section component                   |
 
 ## Architecture
 
@@ -180,6 +214,10 @@ This template uses [Sheriff](https://github.com/softarc-consulting/sheriff) to e
 | `pnpm generate:domain`  | Generate a new domain             |
 | `pnpm build:schematics` | Build custom schematics           |
 | `pnpm modules:list`     | List Sheriff modules              |
+
+## Documentation
+
+Architecture Decision Records (ADRs) are available in the [`docs/ADRs/`](./docs/ADRs/) directory. These documents explain the reasoning behind key architectural decisions made in this project.
 
 ## Configuration Files
 

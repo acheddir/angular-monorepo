@@ -79,17 +79,36 @@ function addPathAliasToTsConfig(tree: Tree, aliasPath: string, targetPath: strin
 }
 
 export function ui(options: UiSchematicSchema): Rule {
-  return (tree: Tree, _context: SchematicContext) => {
-    const { app, domain, name } = options;
+  return async (tree: Tree, _context: SchematicContext) => {
+    const { app, name, shared } = options;
+    let { domain } = options;
+
+    // Prompt for domain only if NOT shared and domain is NOT provided
+    if (!shared && !domain) {
+      const inquirer = await import("inquirer");
+      const answers = await inquirer.default.prompt([
+        {
+          type: "input",
+          name: "domain",
+          message: "Which domain does this UI component belong to?",
+        },
+      ]);
+      domain = answers.domain;
+    }
+
     const uiName = dasherize(name);
-    const domainName = dasherize(domain);
-    const projectPath = `libs/${app}/${domainName}/ui-${uiName}`;
+    const domainName = domain ? dasherize(domain) : "";
+
+    // Conditional path based on shared flag
+    const projectPath = shared
+      ? `libs/${app}/shared/components/ui-${uiName}`
+      : `libs/${app}/modules/${domainName}/ui-${uiName}`;
     const projectName = `ui-${uiName}`;
     const className = classify(name);
     const fileName = uiName;
 
-    // Calculate relative path depth (libs/app/domain/ui-name = 4 levels)
-    const relativePath = calculateRelativePath(4);
+    // Calculate relative path depth (libs/app/modules/domain/ui-name = 5 levels, libs/app/shared/components/ui-name = 5 levels)
+    const relativePath = calculateRelativePath(5);
 
     const templateSource = apply(url("./files/ui-__name__"), [
       template({
@@ -97,7 +116,7 @@ export function ui(options: UiSchematicSchema): Rule {
         name: uiName,
         className,
         fileName,
-        domain: domainName,
+        domain: shared ? "shared" : domainName,
         app,
         relativePath,
         prefix: app,
@@ -108,12 +127,11 @@ export function ui(options: UiSchematicSchema): Rule {
     // Add to angular.json
     addProjectToAngularJson(tree, projectName, projectPath, app);
 
+    // Conditional alias path
+    const aliasPath = shared ? `@${app}/shared/ui-${uiName}` : `@${app}/${domainName}/ui-${uiName}`;
+
     // Add path alias
-    addPathAliasToTsConfig(
-      tree,
-      `@${app}/${domainName}/ui-${uiName}`,
-      `./${projectPath}/src/public-api.ts`
-    );
+    addPathAliasToTsConfig(tree, aliasPath, `./${projectPath}/src/public-api.ts`);
 
     return mergeWith(templateSource);
   };

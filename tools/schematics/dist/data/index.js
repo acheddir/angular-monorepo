@@ -60,12 +60,12 @@ function data(options) {
     return (tree, _context) => {
         const { app, domain } = options;
         const domainName = dasherize(domain);
-        const projectPath = `libs/${app}/${domainName}/data`;
+        const projectPath = `libs/${app}/modules/${domainName}/data`;
         const projectName = `${domainName}-data`;
         const className = classify(domain);
         const fileName = domainName;
-        // Calculate relative path depth (libs/app/domain/data = 4 levels)
-        const relativePath = calculateRelativePath(4);
+        // Calculate relative path depth (libs/app/modules/domain/data = 5 levels)
+        const relativePath = calculateRelativePath(5);
         const templateSource = (0, schematics_1.apply)((0, schematics_1.url)("./files/data"), [
             (0, schematics_1.template)({
                 ...core_1.strings,

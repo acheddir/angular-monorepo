@@ -1,5 +1,6 @@
 export interface UtilSchematicSchema {
   app: string;
-  domain: string;
+  domain?: string;
   name: string;
+  shared?: boolean;
 }

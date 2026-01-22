@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "libs",
   "projects": {
-    "demo": {
+    "app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -33,22 +33,22 @@
           "skipTests": true
         }
       },
-      "root": "apps/demo",
-      "sourceRoot": "apps/demo/src",
-      "prefix": "demo",
+      "root": "apps/app",
+      "sourceRoot": "apps/app/src",
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "browser": "apps/demo/src/main.ts",
-            "tsConfig": "apps/demo/tsconfig.app.json",
+            "browser": "apps/app/src/main.ts",
+            "tsConfig": "apps/app/tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "apps/demo/public"
+                "input": "apps/app/public"
               }
             ],
-            "styles": ["apps/demo/src/styles.css"]
+            "styles": ["apps/app/src/styles.css"]
           },
           "configurations": {
             "production": {
@@ -78,10 +78,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "demo:build:production"
+              "buildTarget": "app:build:production"
             },
             "development": {
-              "buildTarget": "demo:build:development"
+              "buildTarget": "app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -90,18 +90,18 @@
     },
     "feature-shell": {
       "projectType": "library",
-      "root": "libs/demo/shell/feature-shell",
-      "sourceRoot": "libs/demo/shell/feature-shell/src",
-      "prefix": "demo",
+      "root": "libs/app/shell/feature-shell",
+      "sourceRoot": "libs/app/shell/feature-shell/src",
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/build:ng-packagr",
           "configurations": {
             "production": {
-              "tsConfig": "libs/demo/shell/feature-shell/tsconfig.lib.prod.json"
+              "tsConfig": "libs/app/shell/feature-shell/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "libs/demo/shell/feature-shell/tsconfig.lib.json"
+              "tsConfig": "libs/app/shell/feature-shell/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -109,25 +109,25 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "libs/demo/shell/feature-shell/tsconfig.spec.json"
+            "tsConfig": "libs/app/shell/feature-shell/tsconfig.spec.json"
           }
         }
       }
     },
     "feature-welcome": {
       "projectType": "library",
-      "root": "libs/demo/home/feature-welcome",
-      "sourceRoot": "libs/demo/home/feature-welcome/src",
-      "prefix": "demo",
+      "root": "libs/app/home/feature-welcome",
+      "sourceRoot": "libs/app/home/feature-welcome/src",
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/build:ng-packagr",
           "configurations": {
             "production": {
-              "tsConfig": "libs/demo/home/feature-welcome/tsconfig.lib.prod.json"
+              "tsConfig": "libs/app/home/feature-welcome/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "libs/demo/home/feature-welcome/tsconfig.lib.json"
+              "tsConfig": "libs/app/home/feature-welcome/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -135,25 +135,25 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "libs/demo/home/feature-welcome/tsconfig.spec.json"
+            "tsConfig": "libs/app/home/feature-welcome/tsconfig.spec.json"
           }
         }
       }
     },
     "ui-layouts": {
       "projectType": "library",
-      "root": "libs/demo/layouts/ui-layouts",
-      "sourceRoot": "libs/demo/layouts/ui-layouts/src",
-      "prefix": "demo",
+      "root": "libs/app/layouts/ui-layouts",
+      "sourceRoot": "libs/app/layouts/ui-layouts/src",
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/build:ng-packagr",
           "configurations": {
             "production": {
-              "tsConfig": "libs/demo/layouts/ui-layouts/tsconfig.lib.prod.json"
+              "tsConfig": "libs/app/layouts/ui-layouts/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "libs/demo/layouts/ui-layouts/tsconfig.lib.json"
+              "tsConfig": "libs/app/layouts/ui-layouts/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -161,25 +161,25 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "libs/demo/layouts/ui-layouts/tsconfig.spec.json"
+            "tsConfig": "libs/app/layouts/ui-layouts/tsconfig.spec.json"
           }
         }
       }
     },
     "ui-navigation": {
       "projectType": "library",
-      "root": "libs/demo/layouts/ui-navigation",
-      "sourceRoot": "libs/demo/layouts/ui-navigation/src",
-      "prefix": "demo",
+      "root": "libs/app/layouts/ui-navigation",
+      "sourceRoot": "libs/app/layouts/ui-navigation/src",
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/build:ng-packagr",
           "configurations": {
             "production": {
-              "tsConfig": "libs/demo/layouts/ui-navigation/tsconfig.lib.prod.json"
+              "tsConfig": "libs/app/layouts/ui-navigation/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "libs/demo/layouts/ui-navigation/tsconfig.lib.json"
+              "tsConfig": "libs/app/layouts/ui-navigation/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -187,25 +187,25 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "libs/demo/layouts/ui-navigation/tsconfig.spec.json"
+            "tsConfig": "libs/app/layouts/ui-navigation/tsconfig.spec.json"
           }
         }
       }
     },
     "ui-hero": {
       "projectType": "library",
-      "root": "libs/demo/home/ui-hero",
-      "sourceRoot": "libs/demo/home/ui-hero/src",
-      "prefix": "demo",
+      "root": "libs/app/home/ui-hero",
+      "sourceRoot": "libs/app/home/ui-hero/src",
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/build:ng-packagr",
           "configurations": {
             "production": {
-              "tsConfig": "libs/demo/home/ui-hero/tsconfig.lib.prod.json"
+              "tsConfig": "libs/app/home/ui-hero/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "libs/demo/home/ui-hero/tsconfig.lib.json"
+              "tsConfig": "libs/app/home/ui-hero/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -213,7 +213,7 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "libs/demo/home/ui-hero/tsconfig.spec.json"
+            "tsConfig": "libs/app/home/ui-hero/tsconfig.spec.json"
           }
         }
       }

@@ -3,7 +3,7 @@
 /**
  * Angular Template Setup Script
  *
- * This script renames the template project from "demo" to your chosen app name.
+ * This script renames the template project from "app" to your chosen app name.
  * Run this after creating a new repository from the template.
  *
  * Usage: node scripts/setup.mjs
@@ -52,8 +52,8 @@ function validateAppName(name) {
     return "App name must start with a letter and contain only lowercase letters, numbers, and hyphens";
   }
 
-  if (trimmed === "demo") {
-    return 'App name cannot be "demo" - that\'s the template name';
+  if (trimmed === "app") {
+    return 'App name cannot be "app" - that\'s the template name';
   }
 
   if (trimmed.length > 50) {
@@ -85,12 +85,12 @@ function replaceInFile(filePath, oldName, newName) {
 
   // Replace various patterns
   let newContent = content
-    // Replace @demo/ imports and paths
+    // Replace @app/ imports and paths
     .replace(new RegExp(`@${oldName}/`, "g"), `@${newName}/`)
-    // Replace demo/ paths (with trailing slash)
+    // Replace app/ paths (with trailing slash)
     .replace(new RegExp(`apps/${oldName}/`, "g"), `apps/${newName}/`)
     .replace(new RegExp(`libs/${oldName}/`, "g"), `libs/${newName}/`)
-    // Replace demo paths at end of strings (e.g., "root": "apps/demo")
+    // Replace app paths at end of strings (e.g., "root": "apps/app")
     .replace(new RegExp(`apps/${oldName}"`, "g"), `apps/${newName}"`)
     .replace(new RegExp(`libs/${oldName}"`, "g"), `libs/${newName}"`)
     // Replace prefix in configs
@@ -107,14 +107,14 @@ function replaceInFile(filePath, oldName, newName) {
     // Replace selector prefixes in component templates and configs (HTML tags)
     .replace(new RegExp(`<${oldName}-`, "g"), `<${newName}-`)
     .replace(new RegExp(`</${oldName}-`, "g"), `</${newName}-`)
-    // Replace selector strings in TypeScript decorators (e.g., selector: "demo-root")
+    // Replace selector strings in TypeScript decorators (e.g., selector: "app-root")
     .replace(new RegExp(`"${oldName}-`, "g"), `"${newName}-`)
-    // Replace standalone demo references in selectors (e.g., <demo-root></demo-root>)
+    // Replace standalone app references in selectors (e.g., <app-root></app-root>)
     .replace(new RegExp(`<${oldName}>`, "g"), `<${newName}>`)
     .replace(new RegExp(`</${oldName}>`, "g"), `</${newName}>`)
     // Replace in comments and documentation
     .replace(new RegExp(`/${oldName}/`, "g"), `/${newName}/`)
-    // Replace signal/title values like signal("demo")
+    // Replace signal/title values like signal("app")
     .replace(new RegExp(`signal\\("${oldName}"\\)`, "g"), `signal("${newName}")`)
     // Replace capitalized Demo in templates (e.g., "@2025 Demo" footer)
     .replace(new RegExp(`\\b${capitalize(oldName)}\\b`, "g"), capitalize(newName));
@@ -136,7 +136,7 @@ function renameDirectory(oldPath, newPath) {
 
 async function main() {
   console.log("\n🚀 Angular Template Setup\n");
-  console.log("This script will rename the template project from 'demo' to your chosen name.\n");
+  console.log("This script will rename the template project from 'app' to your chosen name.\n");
 
   // Get and validate app name
   let appName;
@@ -168,23 +168,23 @@ async function main() {
   for (const file of filesToUpdate) {
     const filePath = join(ROOT_DIR, file);
     if (existsSync(filePath)) {
-      if (replaceInFile(filePath, "demo", appName)) {
+      if (replaceInFile(filePath, "app", appName)) {
         console.log(`   ✓ ${file}`);
       }
     }
   }
 
-  // Step 2: Update all files in apps/demo and libs/demo
+  // Step 2: Update all files in apps/app and libs/app
   console.log("\n📁 Updating files in apps and libs...");
 
-  const appsDir = join(ROOT_DIR, "apps", "demo");
-  const libsDir = join(ROOT_DIR, "libs", "demo");
+  const appsDir = join(ROOT_DIR, "apps", "app");
+  const libsDir = join(ROOT_DIR, "libs", "app");
 
   const allFiles = [...getAllFiles(appsDir), ...getAllFiles(libsDir)];
 
   let updatedCount = 0;
   for (const filePath of allFiles) {
-    if (replaceInFile(filePath, "demo", appName)) {
+    if (replaceInFile(filePath, "app", appName)) {
       updatedCount++;
     }
   }
@@ -197,11 +197,11 @@ async function main() {
   const newLibsDir = join(ROOT_DIR, "libs", appName);
 
   if (renameDirectory(appsDir, newAppsDir)) {
-    console.log(`   ✓ apps/demo → apps/${appName}`);
+    console.log(`   ✓ apps/app → apps/${appName}`);
   }
 
   if (renameDirectory(libsDir, newLibsDir)) {
-    console.log(`   ✓ libs/demo → libs/${appName}`);
+    console.log(`   ✓ libs/app → libs/${appName}`);
   }
 
   // Step 4: Update package.json name field

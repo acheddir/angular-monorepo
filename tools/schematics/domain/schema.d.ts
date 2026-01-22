@@ -1,5 +1,5 @@
 export interface DomainSchematicSchema {
-  /** Target app name (e.g., demo) */
+  /** Target app name (e.g., app) */
   app: string;
   /** Domain name (e.g., products, users) */
   domain: string;

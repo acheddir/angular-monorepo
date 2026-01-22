@@ -79,25 +79,44 @@ function addPathAliasToTsConfig(tree: Tree, aliasPath: string, targetPath: strin
 }
 
 export function types(options: TypesSchematicSchema): Rule {
-  return (tree: Tree, _context: SchematicContext) => {
-    const { app, domain } = options;
-    const domainName = dasherize(domain);
-    const projectPath = `libs/${app}/${domainName}/types`;
-    const projectName = `${domainName}-types`;
+  return async (tree: Tree, _context: SchematicContext) => {
+    const { app, shared } = options;
+    let { domain } = options;
 
-    const className = classify(domain);
-    const fileName = domainName;
+    // Prompt for domain only if NOT shared and domain is NOT provided
+    if (!shared && !domain) {
+      const inquirer = await import("inquirer");
+      const answers = await inquirer.default.prompt([
+        {
+          type: "input",
+          name: "domain",
+          message: "Which domain does this types library belong to?",
+        },
+      ]);
+      domain = answers.domain;
+    }
 
-    // Calculate relative path depth (libs/app/domain/types = 4 levels)
-    const relativePath = calculateRelativePath(4);
+    const domainName = domain ? dasherize(domain) : "";
+
+    // Conditional path based on shared flag
+    const projectPath = shared
+      ? `libs/${app}/shared/types`
+      : `libs/${app}/modules/${domainName}/types`;
+    const projectName = shared ? "shared-types" : `${domainName}-types`;
+
+    const className = domain ? classify(domain) : "Shared";
+    const fileName = domain ? domainName : "shared";
+
+    // Calculate relative path depth (libs/app/modules/domain/types = 5 levels, libs/app/shared/types = 4 levels)
+    const relativePath = calculateRelativePath(shared ? 4 : 5);
 
     const templateSource = apply(url("./files/types"), [
       template({
         ...strings,
-        name: domainName,
+        name: shared ? "shared" : domainName,
         className,
         fileName,
-        domain: domainName,
+        domain: shared ? "shared" : domainName,
         app,
         relativePath,
         prefix: app,
@@ -108,12 +127,11 @@ export function types(options: TypesSchematicSchema): Rule {
     // Add to angular.json
     addProjectToAngularJson(tree, projectName, projectPath, app);
 
+    // Conditional alias path
+    const aliasPath = shared ? `@${app}/shared/types` : `@${app}/${domainName}/types`;
+
     // Add path alias
-    addPathAliasToTsConfig(
-      tree,
-      `@${app}/${domainName}/types`,
-      `./${projectPath}/src/public-api.ts`
-    );
+    addPathAliasToTsConfig(tree, aliasPath, `./${projectPath}/src/public-api.ts`);
 
     return mergeWith(templateSource);
   };

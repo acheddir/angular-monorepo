@@ -83,13 +83,13 @@ export function feature(options: FeatureSchematicSchema): Rule {
     const { app, domain, name } = options;
     const featureName = dasherize(name);
     const domainName = dasherize(domain);
-    const projectPath = `libs/${app}/${domainName}/feature-${featureName}`;
+    const projectPath = `libs/${app}/modules/${domainName}/feature-${featureName}`;
     const projectName = `feature-${featureName}`;
     const className = classify(name);
     const fileName = featureName;
 
-    // Calculate relative path depth (libs/app/domain/feature-name = 4 levels)
-    const relativePath = calculateRelativePath(4);
+    // Calculate relative path depth (libs/app/modules/domain/feature-name = 5 levels)
+    const relativePath = calculateRelativePath(5);
 
     const templateSource = apply(url("./files/feature-__name__"), [
       template({

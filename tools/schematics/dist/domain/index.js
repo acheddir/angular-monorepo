@@ -64,12 +64,12 @@ function createFeatureLibrary(options) {
         const { app, domain, name } = options;
         const featureName = dasherize(name);
         const domainName = dasherize(domain);
-        const projectPath = `libs/${app}/${domainName}/feature-${featureName}`;
+        const projectPath = `libs/${app}/modules/${domainName}/feature-${featureName}`;
         const projectName = `feature-${featureName}`;
         const className = classify(name);
         const fileName = featureName;
-        // Calculate relative path depth (libs/app/domain/feature-name = 4 levels)
-        const relativePath = calculateRelativePath(4);
+        // Calculate relative path depth (libs/app/modules/domain/feature-name = 5 levels)
+        const relativePath = calculateRelativePath(5);
         const templateSource = (0, schematics_1.apply)((0, schematics_1.url)("./files/feature-__name__"), [
             (0, schematics_1.template)({
                 ...core_1.strings,
@@ -94,7 +94,7 @@ function createDataLibrary(options) {
     return (tree, _context) => {
         const { app, domain } = options;
         const domainName = dasherize(domain);
-        const projectPath = `libs/${app}/${domainName}/data`;
+        const projectPath = `libs/${app}/modules/${domainName}/data`;
         const projectName = `${domainName}-data`;
         // Check if data library already exists
         if (tree.exists(`${projectPath}/src/public-api.ts`)) {
@@ -102,8 +102,8 @@ function createDataLibrary(options) {
         }
         const className = classify(domain);
         const fileName = domainName;
-        // Calculate relative path depth (libs/app/domain/data = 4 levels)
-        const relativePath = calculateRelativePath(4);
+        // Calculate relative path depth (libs/app/modules/domain/data = 5 levels)
+        const relativePath = calculateRelativePath(5);
         const templateSource = (0, schematics_1.apply)((0, schematics_1.url)("./files/data"), [
             (0, schematics_1.template)({
                 ...core_1.strings,
@@ -128,7 +128,7 @@ function createTypesLibrary(options) {
     return (tree, _context) => {
         const { app, domain } = options;
         const domainName = dasherize(domain);
-        const projectPath = `libs/${app}/${domainName}/types`;
+        const projectPath = `libs/${app}/modules/${domainName}/types`;
         const projectName = `${domainName}-types`;
         // Check if types library already exists
         if (tree.exists(`${projectPath}/src/public-api.ts`)) {
@@ -136,8 +136,8 @@ function createTypesLibrary(options) {
         }
         const className = classify(domain);
         const fileName = domainName;
-        // Calculate relative path depth (libs/app/domain/types = 4 levels)
-        const relativePath = calculateRelativePath(4);
+        // Calculate relative path depth (libs/app/modules/domain/types = 5 levels)
+        const relativePath = calculateRelativePath(5);
         const templateSource = (0, schematics_1.apply)((0, schematics_1.url)("./files/types"), [
             (0, schematics_1.template)({
                 ...core_1.strings,

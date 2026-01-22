@@ -1,7 +1,7 @@
 import { sameTag, SheriffConfig } from "@softarc/sheriff-core";
 
 export const config: SheriffConfig = {
-  entryFile: "apps/demo/src/main.ts",
+  entryFile: "apps/app/src/main.ts",
   barrelFileName: "public-api.ts",
   modules: {
     apps: {
@@ -11,17 +11,17 @@ export const config: SheriffConfig = {
     },
     libs: {
       "<app>-bff": {
-        "<domain>": {
-          api: {
-            src: ["domain:<domain>", "type:api"],
-          },
-        },
         shared: {
           schema: {
             src: ["domain:shared", "type:schema"],
           },
           "util-<name>": {
             src: ["domain:shared", "type:util"],
+          },
+        },
+        "<domain>": {
+          api: {
+            src: ["domain:<domain>", "type:api"],
           },
         },
       },
@@ -55,21 +55,23 @@ export const config: SheriffConfig = {
             src: ["domain:shared", "type:util"],
           },
         },
-        "<domain>": {
-          "feature-<name>": {
-            src: ["domain:<domain>", "type:feature"],
-          },
-          data: {
-            src: ["domain:<domain>", "type:data"],
-          },
-          types: {
-            src: ["domain:<domain>", "type:types"],
-          },
-          "ui-<name>": {
-            src: ["domain:<domain>", "type:ui"],
-          },
-          "util-<name>": {
-            src: ["domain:<domain>", "type:util"],
+        modules: {
+          "<domain>": {
+            "feature-<name>": {
+              src: ["domain:<domain>", "type:feature"],
+            },
+            data: {
+              src: ["domain:<domain>", "type:data"],
+            },
+            types: {
+              src: ["domain:<domain>", "type:types"],
+            },
+            "ui-<name>": {
+              src: ["domain:<domain>", "type:ui"],
+            },
+            "util-<name>": {
+              src: ["domain:<domain>", "type:util"],
+            },
           },
         },
       },
@@ -77,10 +79,8 @@ export const config: SheriffConfig = {
   },
   depRules: {
     root: ["*"],
-    // --- domains
     "domain:*": [sameTag, "domain:shared"],
     "domain:shared": [sameTag],
-    // --- types
     "type:app": ["*"],
     "type:shell": ["type:feature", "type:ui", "type:util"],
     "type:feature": [sameTag, "type:data", "type:ui", "type:util", "type:types", "type:contract"],

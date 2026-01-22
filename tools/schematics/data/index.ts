@@ -82,14 +82,14 @@ export function data(options: DataSchematicSchema): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     const { app, domain } = options;
     const domainName = dasherize(domain);
-    const projectPath = `libs/${app}/${domainName}/data`;
+    const projectPath = `libs/${app}/modules/${domainName}/data`;
     const projectName = `${domainName}-data`;
 
     const className = classify(domain);
     const fileName = domainName;
 
-    // Calculate relative path depth (libs/app/domain/data = 4 levels)
-    const relativePath = calculateRelativePath(4);
+    // Calculate relative path depth (libs/app/modules/domain/data = 5 levels)
+    const relativePath = calculateRelativePath(5);
 
     const templateSource = apply(url("./files/data"), [
       template({

@@ -89,13 +89,13 @@ function createFeatureLibrary(options: DomainSchematicSchema): Rule {
     const { app, domain, name } = options;
     const featureName = dasherize(name);
     const domainName = dasherize(domain);
-    const projectPath = `libs/${app}/${domainName}/feature-${featureName}`;
+    const projectPath = `libs/${app}/modules/${domainName}/feature-${featureName}`;
     const projectName = `feature-${featureName}`;
     const className = classify(name);
     const fileName = featureName;
 
-    // Calculate relative path depth (libs/app/domain/feature-name = 4 levels)
-    const relativePath = calculateRelativePath(4);
+    // Calculate relative path depth (libs/app/modules/domain/feature-name = 5 levels)
+    const relativePath = calculateRelativePath(5);
 
     const templateSource = apply(url("./files/feature-__name__"), [
       template({
@@ -129,7 +129,7 @@ function createDataLibrary(options: DomainSchematicSchema): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     const { app, domain } = options;
     const domainName = dasherize(domain);
-    const projectPath = `libs/${app}/${domainName}/data`;
+    const projectPath = `libs/${app}/modules/${domainName}/data`;
     const projectName = `${domainName}-data`;
 
     // Check if data library already exists
@@ -140,8 +140,8 @@ function createDataLibrary(options: DomainSchematicSchema): Rule {
     const className = classify(domain);
     const fileName = domainName;
 
-    // Calculate relative path depth (libs/app/domain/data = 4 levels)
-    const relativePath = calculateRelativePath(4);
+    // Calculate relative path depth (libs/app/modules/domain/data = 5 levels)
+    const relativePath = calculateRelativePath(5);
 
     const templateSource = apply(url("./files/data"), [
       template({
@@ -175,7 +175,7 @@ function createTypesLibrary(options: DomainSchematicSchema): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     const { app, domain } = options;
     const domainName = dasherize(domain);
-    const projectPath = `libs/${app}/${domainName}/types`;
+    const projectPath = `libs/${app}/modules/${domainName}/types`;
     const projectName = `${domainName}-types`;
 
     // Check if types library already exists
@@ -186,8 +186,8 @@ function createTypesLibrary(options: DomainSchematicSchema): Rule {
     const className = classify(domain);
     const fileName = domainName;
 
-    // Calculate relative path depth (libs/app/domain/types = 4 levels)
-    const relativePath = calculateRelativePath(4);
+    // Calculate relative path depth (libs/app/modules/domain/types = 5 levels)
+    const relativePath = calculateRelativePath(5);
 
     const templateSource = apply(url("./files/types"), [
       template({
