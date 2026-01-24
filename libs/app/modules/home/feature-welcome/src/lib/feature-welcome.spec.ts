@@ -6,7 +6,7 @@ import { FeatureWelcome } from "./feature-welcome";
 
 @Component({
   selector: "app-hero",
-  template: "<ng-content />",
+  template: "<ng-content />"
 })
 class MockHero {
   public title = input<string>();
@@ -19,11 +19,11 @@ describe("FeatureWelcome", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FeatureWelcome],
+      imports: [FeatureWelcome]
     })
       .overrideComponent(FeatureWelcome, {
         remove: { imports: [Hero] },
-        add: { imports: [MockHero] },
+        add: { imports: [MockHero] }
       })
       .compileComponents();
 

@@ -17,7 +17,7 @@ import { Navigation, NavItem } from "@app/layouts/navigation";
       <app-footer />
     </div>
   `,
-  styles: ``,
+  styles: ``
 })
 export class RootShell {
   public navItems: NavItem[] = [{ label: "Home", path: "/" }];

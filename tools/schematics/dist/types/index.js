@@ -45,38 +45,37 @@ function classify(str) {
 function calculateRelativePath(depth) {
     return "../".repeat(depth);
 }
-function addProjectToAngularJson(tree, projectName, projectPath, prefix) {
-    const angularJsonPath = "/angular.json";
-    const angularJson = JSON.parse(tree.read(angularJsonPath).toString("utf-8"));
-    if (!angularJson.projects[projectName]) {
-        angularJson.projects[projectName] = {
-            projectType: "library",
-            root: projectPath,
-            sourceRoot: `${projectPath}/src`,
-            prefix: prefix,
-            architect: {
-                build: {
-                    builder: "@angular/build:ng-packagr",
-                    configurations: {
-                        production: {
-                            tsConfig: `${projectPath}/tsconfig.lib.prod.json`,
-                        },
-                        development: {
-                            tsConfig: `${projectPath}/tsconfig.lib.json`,
-                        },
-                    },
-                    defaultConfiguration: "production",
-                },
-                test: {
-                    builder: "@angular/build:unit-test",
-                    options: {
-                        tsConfig: `${projectPath}/tsconfig.spec.json`,
-                    },
-                },
-            },
-        };
-        tree.overwrite(angularJsonPath, JSON.stringify(angularJson, null, 2) + "\n");
+function createProjectJson(tree, projectName, projectPath, prefix) {
+    const projectJsonPath = `${projectPath}/project.json`;
+    if (tree.exists(projectJsonPath)) {
+        return;
     }
+    const projectJson = {
+        name: projectName,
+        projectType: "library",
+        prefix: prefix,
+        architect: {
+            build: {
+                builder: "@angular/build:ng-packagr",
+                configurations: {
+                    production: {
+                        tsConfig: `${projectPath}/tsconfig.lib.prod.json`
+                    },
+                    development: {
+                        tsConfig: `${projectPath}/tsconfig.lib.json`
+                    }
+                },
+                defaultConfiguration: "production"
+            },
+            test: {
+                builder: "@angular/build:unit-test",
+                options: {
+                    tsConfig: `${projectPath}/tsconfig.spec.json`
+                }
+            }
+        }
+    };
+    tree.create(projectJsonPath, JSON.stringify(projectJson, null, 2) + "\n");
 }
 function addPathAliasToTsConfig(tree, aliasPath, targetPath) {
     const tsconfigPath = "/tsconfig.json";
@@ -89,19 +88,73 @@ function addPathAliasToTsConfig(tree, aliasPath, targetPath) {
         tree.overwrite(tsconfigPath, JSON.stringify(tsconfig, null, 2) + "\n");
     }
 }
+const HELP_TEXT = `
+Types Schematic - Generate a single types/models library
+
+USAGE:
+  ng g @tools/schematics:types [options]
+  ng g types [options]
+
+OPTIONS:
+  --app <string>       Target app name (e.g., app) [required]
+  --domain <string>    Domain name (e.g., products, users)
+  --shared             Place in shared folder instead of domain
+  --help, -h           Show this help message
+
+EXAMPLES:
+  ng g types --app=app --domain=products
+  ng g types --app=app --shared
+
+OUTPUT PATHS:
+  Domain:  libs/{app}/modules/{domain}/types/
+  Shared:  libs/{app}/shared/types/
+
+PATH ALIASES:
+  Domain:  @{app}/{domain}/types
+  Shared:  @{app}/shared/types
+`;
 function types(options) {
-    return async (tree, _context) => {
-        const { app, shared } = options;
-        let { domain } = options;
-        // Prompt for domain only if NOT shared and domain is NOT provided
-        if (!shared && !domain) {
+    return async (tree, context) => {
+        // Handle help flag
+        if (options.help) {
+            context.logger.info(HELP_TEXT);
+            return (0, schematics_1.noop)();
+        }
+        const { app } = options;
+        let { domain, shared } = options;
+        // If domain is not provided and shared is not true, ask if it's shared
+        if (!domain && !shared) {
+            const inquirer = await Promise.resolve().then(() => __importStar(require("inquirer")));
+            const sharedAnswer = await inquirer.default.prompt([
+                {
+                    type: "confirm",
+                    name: "shared",
+                    message: "Is this types library shared across domains?",
+                    default: false
+                }
+            ]);
+            shared = sharedAnswer.shared;
+            // If not shared, prompt for domain
+            if (!shared) {
+                const domainAnswer = await inquirer.default.prompt([
+                    {
+                        type: "input",
+                        name: "domain",
+                        message: "Which domain does this types library belong to?"
+                    }
+                ]);
+                domain = domainAnswer.domain;
+            }
+        }
+        else if (!shared && !domain) {
+            // This shouldn't happen, but failsafe for domain prompt
             const inquirer = await Promise.resolve().then(() => __importStar(require("inquirer")));
             const answers = await inquirer.default.prompt([
                 {
                     type: "input",
                     name: "domain",
-                    message: "Which domain does this types library belong to?",
-                },
+                    message: "Which domain does this types library belong to?"
+                }
             ]);
             domain = answers.domain;
         }
@@ -124,16 +177,14 @@ function types(options) {
                 domain: shared ? "shared" : domainName,
                 app,
                 relativePath,
-                prefix: app,
+                prefix: app
             }),
-            (0, schematics_1.move)(projectPath),
+            (0, schematics_1.move)(projectPath)
         ]);
-        // Add to angular.json
-        addProjectToAngularJson(tree, projectName, projectPath, app);
+        // Create project.json in the library directory
+        createProjectJson(tree, projectName, projectPath, app);
         // Conditional alias path
-        const aliasPath = shared
-            ? `@${app}/shared/types`
-            : `@${app}/${domainName}/types`;
+        const aliasPath = shared ? `@${app}/shared/types` : `@${app}/${domainName}/types`;
         // Add path alias
         addPathAliasToTsConfig(tree, aliasPath, `./${projectPath}/src/public-api.ts`);
         return (0, schematics_1.mergeWith)(templateSource);

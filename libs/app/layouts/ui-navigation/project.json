@@ -1,0 +1,25 @@
+{
+  "name": "ui-navigation",
+  "projectType": "library",
+  "prefix": "app",
+  "architect": {
+    "build": {
+      "builder": "@angular/build:ng-packagr",
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/app/layouts/ui-navigation/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/app/layouts/ui-navigation/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "builder": "@angular/build:unit-test",
+      "options": {
+        "tsConfig": "libs/app/layouts/ui-navigation/tsconfig.spec.json"
+      }
+    }
+  }
+}

@@ -8,9 +8,8 @@ export const routes: Route[] = [
     children: [
       {
         path: "",
-        loadComponent: async () =>
-          (await import("../../../../modules/home/feature-welcome/src/public-api")).FeatureWelcome,
-      },
-    ],
-  },
+        loadComponent: async () => (await import("@app/home/feature-welcome")).FeatureWelcome
+      }
+    ]
+  }
 ];

@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted
+✅ Accepted
 
 ## Context
 
@@ -38,18 +38,23 @@ We will use **Vitest** as our test runner with **Angular Testing Library** for c
 
 ```typescript
 // vitest.config.ts
+import tsconfigPaths from "vite-tsconfig-paths";
+
 export default defineConfig({
+  plugins: [tsconfigPaths()],
   test: {
     globals: true,
     environment: "jsdom",
     setupFiles: "./test-setup.ts",
     coverage: {
       provider: "v8",
-      reporter: ["text", "html", "lcov"],
-    },
-  },
+      reporter: ["text", "html", "lcov"]
+    }
+  }
 });
 ```
+
+The `vite-tsconfig-paths` plugin reads path mappings from `tsconfig.json`, ensuring tests use the same import aliases as the application without duplicating configuration.
 
 ### Alternatives Considered:
 

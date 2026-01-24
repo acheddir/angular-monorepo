@@ -23,6 +23,6 @@ import { Hero } from "../../../ui-hero/src/public-api";
       </a>
     </app-hero>
   `,
-  styles: ``,
+  styles: ``
 })
 export class FeatureWelcome {}

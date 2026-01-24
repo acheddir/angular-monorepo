@@ -17,6 +17,6 @@ import { Component } from "@angular/core";
       </div>
     </header>
   `,
-  styles: ``,
+  styles: ``
 })
 export class Header {}

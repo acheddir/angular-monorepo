@@ -42,44 +42,40 @@ function dasherize(str) {
 function classify(str) {
     return core_1.strings.classify(str);
 }
-function camelize(str) {
-    return core_1.strings.camelize(str);
-}
 function calculateRelativePath(depth) {
     return "../".repeat(depth);
 }
-function addProjectToAngularJson(tree, projectName, projectPath, prefix) {
-    const angularJsonPath = "/angular.json";
-    const angularJson = JSON.parse(tree.read(angularJsonPath).toString("utf-8"));
-    if (!angularJson.projects[projectName]) {
-        angularJson.projects[projectName] = {
-            projectType: "library",
-            root: projectPath,
-            sourceRoot: `${projectPath}/src`,
-            prefix: prefix,
-            architect: {
-                build: {
-                    builder: "@angular/build:ng-packagr",
-                    configurations: {
-                        production: {
-                            tsConfig: `${projectPath}/tsconfig.lib.prod.json`,
-                        },
-                        development: {
-                            tsConfig: `${projectPath}/tsconfig.lib.json`,
-                        },
-                    },
-                    defaultConfiguration: "production",
-                },
-                test: {
-                    builder: "@angular/build:unit-test",
-                    options: {
-                        tsConfig: `${projectPath}/tsconfig.spec.json`,
-                    },
-                },
-            },
-        };
-        tree.overwrite(angularJsonPath, JSON.stringify(angularJson, null, 2) + "\n");
+function createProjectJson(tree, projectName, projectPath, prefix) {
+    const projectJsonPath = `${projectPath}/project.json`;
+    if (tree.exists(projectJsonPath)) {
+        return;
     }
+    const projectJson = {
+        name: projectName,
+        projectType: "library",
+        prefix: prefix,
+        architect: {
+            build: {
+                builder: "@angular/build:ng-packagr",
+                configurations: {
+                    production: {
+                        tsConfig: `${projectPath}/tsconfig.lib.prod.json`
+                    },
+                    development: {
+                        tsConfig: `${projectPath}/tsconfig.lib.json`
+                    }
+                },
+                defaultConfiguration: "production"
+            },
+            test: {
+                builder: "@angular/build:unit-test",
+                options: {
+                    tsConfig: `${projectPath}/tsconfig.spec.json`
+                }
+            }
+        }
+    };
+    tree.create(projectJsonPath, JSON.stringify(projectJson, null, 2) + "\n");
 }
 function addPathAliasToTsConfig(tree, aliasPath, targetPath) {
     const tsconfigPath = "/tsconfig.json";
@@ -92,19 +88,74 @@ function addPathAliasToTsConfig(tree, aliasPath, targetPath) {
         tree.overwrite(tsconfigPath, JSON.stringify(tsconfig, null, 2) + "\n");
     }
 }
+const HELP_TEXT = `
+Util Schematic - Generate a single utility library
+
+USAGE:
+  ng g @tools/schematics:util [options]
+  ng g util [options]
+
+OPTIONS:
+  --app <string>       Target app name (e.g., app) [required]
+  --name <string>      Utility name (e.g., formatters, validators) [required]
+  --domain <string>    Domain name (e.g., products, users)
+  --shared             Place in shared folder instead of domain
+  --help, -h           Show this help message
+
+EXAMPLES:
+  ng g util --app=app --domain=products --name=formatters
+  ng g util --app=app --name=date-helpers --shared
+
+OUTPUT PATHS:
+  Domain:  libs/{app}/modules/{domain}/util-{name}/
+  Shared:  libs/{app}/shared/util-{name}/
+
+PATH ALIASES:
+  Domain:  @{app}/{domain}/util-{name}
+  Shared:  @{app}/shared/util-{name}
+`;
 function util(options) {
-    return async (tree, _context) => {
-        const { app, name, shared } = options;
-        let { domain } = options;
-        // Prompt for domain only if NOT shared and domain is NOT provided
-        if (!shared && !domain) {
+    return async (tree, context) => {
+        // Handle help flag
+        if (options.help) {
+            context.logger.info(HELP_TEXT);
+            return (0, schematics_1.noop)();
+        }
+        const { app, name } = options;
+        let { domain, shared } = options;
+        // If domain is not provided and shared is not true, ask if it's shared
+        if (!domain && !shared) {
+            const inquirer = await Promise.resolve().then(() => __importStar(require("inquirer")));
+            const sharedAnswer = await inquirer.default.prompt([
+                {
+                    type: "confirm",
+                    name: "shared",
+                    message: "Is this utility shared across domains?",
+                    default: false
+                }
+            ]);
+            shared = sharedAnswer.shared;
+            // If not shared, prompt for domain
+            if (!shared) {
+                const domainAnswer = await inquirer.default.prompt([
+                    {
+                        type: "input",
+                        name: "domain",
+                        message: "Which domain does this utility belong to?"
+                    }
+                ]);
+                domain = domainAnswer.domain;
+            }
+        }
+        else if (!shared && !domain) {
+            // This shouldn't happen, but failsafe for domain prompt
             const inquirer = await Promise.resolve().then(() => __importStar(require("inquirer")));
             const answers = await inquirer.default.prompt([
                 {
                     type: "input",
                     name: "domain",
-                    message: "Which domain does this utility belong to?",
-                },
+                    message: "Which domain does this utility belong to?"
+                }
             ]);
             domain = answers.domain;
         }
@@ -128,12 +179,12 @@ function util(options) {
                 domain: shared ? "shared" : domainName,
                 app,
                 relativePath,
-                prefix: app,
+                prefix: app
             }),
-            (0, schematics_1.move)(projectPath),
+            (0, schematics_1.move)(projectPath)
         ]);
-        // Add to angular.json
-        addProjectToAngularJson(tree, projectName, projectPath, app);
+        // Create project.json in the library directory
+        createProjectJson(tree, projectName, projectPath, app);
         // Conditional alias path
         const aliasPath = shared
             ? `@${app}/shared/util-${utilName}`

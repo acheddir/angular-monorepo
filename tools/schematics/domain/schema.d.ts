@@ -5,4 +5,8 @@ export interface DomainSchematicSchema {
   domain: string;
   /** Feature name (e.g., list, detail) */
   name: string;
+  /** Add route to shell for the feature */
+  routing?: boolean;
+  /** Add to navigation menu for the feature */
+  navigation?: boolean;
 }

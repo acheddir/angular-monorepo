@@ -15,29 +15,29 @@ export default [
       ".angular/**",
       "eslint.config.mjs",
       "tools/schematics/**",
-      "scripts/**",
-    ],
+      "scripts/**"
+    ]
   },
   eslint.configs.recommended,
   ...tseslint.configs.strictTypeChecked.map((config) => ({
     ...config,
-    files: ["**/*.ts"],
+    files: ["**/*.ts"]
   })),
   ...tseslint.configs.stylisticTypeChecked.map((config) => ({
     ...config,
-    files: ["**/*.ts"],
+    files: ["**/*.ts"]
   })),
   ...angular.configs.tsRecommended.map((config) => ({
     ...config,
-    files: ["**/*.ts"],
+    files: ["**/*.ts"]
   })),
   {
     files: ["**/*.ts"],
     languageOptions: {
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: __dirname,
-      },
+        tsconfigRootDir: __dirname
+      }
     },
     processor: angular.processInlineTemplates,
     rules: {
@@ -47,16 +47,16 @@ export default [
         {
           type: "attribute",
           prefix: ["app"],
-          style: "camelCase",
-        },
+          style: "camelCase"
+        }
       ],
       "@angular-eslint/component-selector": [
         "error",
         {
           type: "element",
           prefix: ["app"],
-          style: "kebab-case",
-        },
+          style: "kebab-case"
+        }
       ],
       "@angular-eslint/no-empty-lifecycle-method": "error",
       "@angular-eslint/no-input-rename": "error",
@@ -69,25 +69,25 @@ export default [
         "error",
         {
           allowExpressions: true,
-          allowTypedFunctionExpressions: true,
-        },
+          allowTypedFunctionExpressions: true
+        }
       ],
       "@typescript-eslint/explicit-member-accessibility": [
         "error",
         {
           accessibility: "explicit",
           overrides: {
-            constructors: "no-public",
-          },
-        },
+            constructors: "no-public"
+          }
+        }
       ],
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
           argsIgnorePattern: "^_",
-          varsIgnorePattern: "^_",
-        },
+          varsIgnorePattern: "^_"
+        }
       ],
       "@typescript-eslint/no-floating-promises": "error",
       "@typescript-eslint/no-misused-promises": "error",
@@ -98,8 +98,8 @@ export default [
       "@typescript-eslint/strict-boolean-expressions": [
         "error",
         {
-          allowNullableBoolean: true,
-        },
+          allowNullableBoolean: true
+        }
       ],
 
       // Code style
@@ -109,54 +109,54 @@ export default [
           selector: "default",
           format: ["camelCase"],
           leadingUnderscore: "allow",
-          trailingUnderscore: "forbid",
+          trailingUnderscore: "forbid"
         },
         {
           selector: "variable",
           format: ["camelCase", "UPPER_CASE"],
-          leadingUnderscore: "allow",
+          leadingUnderscore: "allow"
         },
         {
           selector: "function",
           format: ["camelCase", "PascalCase"],
-          leadingUnderscore: "allow",
+          leadingUnderscore: "allow"
         },
         {
           selector: "typeLike",
-          format: ["PascalCase"],
+          format: ["PascalCase"]
         },
         {
           selector: "enumMember",
-          format: ["PascalCase", "UPPER_CASE"],
+          format: ["PascalCase", "UPPER_CASE"]
         },
         {
           selector: "property",
-          format: null,
-        },
+          format: null
+        }
       ],
       // Allow empty classes for Angular components/directives/pipes (decorated classes)
       "@typescript-eslint/no-extraneous-class": ["error", { allowWithDecorator: true }],
       "no-console": ["warn", { allow: ["warn", "error"] }],
       "no-debugger": "error",
       "prefer-const": "error",
-      "no-var": "error",
-    },
+      "no-var": "error"
+    }
   },
   ...angular.configs.templateRecommended.map((config) => ({
     ...config,
-    files: ["**/*.html"],
+    files: ["**/*.html"]
   })),
   ...angular.configs.templateAccessibility.map((config) => ({
     ...config,
-    files: ["**/*.html"],
+    files: ["**/*.html"]
   })),
   {
     files: ["**/*.html"],
     rules: {
       "@angular-eslint/template/prefer-self-closing-tags": "error",
       "@angular-eslint/template/no-call-expression": "warn",
-      "@angular-eslint/template/use-track-by-function": "error",
-    },
+      "@angular-eslint/template/use-track-by-function": "error"
+    }
   },
   {
     files: ["**/*.spec.ts", "**/*-setup.ts"],
@@ -167,11 +167,11 @@ export default [
       "@typescript-eslint/no-unsafe-member-access": "off",
       "@typescript-eslint/no-unsafe-assignment": "off",
       "@typescript-eslint/no-unsafe-argument": "off",
-      "@typescript-eslint/no-unsafe-return": "off",
-    },
+      "@typescript-eslint/no-unsafe-return": "off"
+    }
   },
   {
     ...sheriff.configs.all,
-    files: ["**/*.ts"],
-  },
+    files: ["**/*.ts"]
+  }
 ];

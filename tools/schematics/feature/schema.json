@@ -7,6 +7,7 @@
   "properties": {
     "app": {
       "type": "string",
+      "default": "app",
       "description": "Target app name (e.g., app)",
       "x-prompt": "What is the target app name?"
     },
@@ -19,6 +20,16 @@
       "type": "string",
       "description": "Feature name (e.g., list, detail)",
       "x-prompt": "What is the feature name?"
+    },
+    "routing": {
+      "type": "boolean",
+      "description": "Add route to shell",
+      "default": false
+    },
+    "navigation": {
+      "type": "boolean",
+      "description": "Add to navigation menu",
+      "default": false
     }
   },
   "required": ["app", "domain", "name"]

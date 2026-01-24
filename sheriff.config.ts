@@ -6,76 +6,76 @@ export const config: SheriffConfig = {
   modules: {
     apps: {
       "<app>": {
-        src: ["type:app"],
-      },
+        src: ["type:app"]
+      }
     },
     libs: {
       "<app>-bff": {
         shared: {
           schema: {
-            src: ["domain:shared", "type:schema"],
+            src: ["domain:shared", "type:schema"]
           },
           "util-<name>": {
-            src: ["domain:shared", "type:util"],
-          },
+            src: ["domain:shared", "type:util"]
+          }
         },
         "<domain>": {
           api: {
-            src: ["domain:<domain>", "type:api"],
-          },
-        },
+            src: ["domain:<domain>", "type:api"]
+          }
+        }
       },
       "<app>-contracts": {
         shared: {
-          src: ["domain:shared", "type:contract"],
+          src: ["domain:shared", "type:contract"]
         },
         "<domain>": {
-          src: ["domain:<domain>", "type:contract"],
-        },
+          src: ["domain:<domain>", "type:contract"]
+        }
       },
       "<app>": {
         shell: {
           "feature-shell": {
-            src: ["type:shell"],
-          },
+            src: ["type:shell"]
+          }
         },
         layouts: {
           "ui-<name>": {
-            src: ["type:ui"],
-          },
+            src: ["type:ui"]
+          }
         },
         shared: {
           types: {
-            src: ["domain:shared", "type:types"],
+            src: ["domain:shared", "type:types"]
           },
           "ui-<name>": {
-            src: ["domain:shared", "type:ui"],
+            src: ["domain:shared", "type:ui"]
           },
           "util-<name>": {
-            src: ["domain:shared", "type:util"],
-          },
+            src: ["domain:shared", "type:util"]
+          }
         },
         modules: {
           "<domain>": {
             "feature-<name>": {
-              src: ["domain:<domain>", "type:feature"],
+              src: ["domain:<domain>", "type:feature"]
             },
             data: {
-              src: ["domain:<domain>", "type:data"],
+              src: ["domain:<domain>", "type:data"]
             },
             types: {
-              src: ["domain:<domain>", "type:types"],
+              src: ["domain:<domain>", "type:types"]
             },
             "ui-<name>": {
-              src: ["domain:<domain>", "type:ui"],
+              src: ["domain:<domain>", "type:ui"]
             },
             "util-<name>": {
-              src: ["domain:<domain>", "type:util"],
-            },
-          },
-        },
-      },
-    },
+              src: ["domain:<domain>", "type:util"]
+            }
+          }
+        }
+      }
+    }
   },
   depRules: {
     root: ["*"],
@@ -90,6 +90,6 @@ export const config: SheriffConfig = {
     "type:schema": ["type:types", "type:contract"],
     "type:util": [sameTag, "type:contract"],
     "type:types": [sameTag, "type:contract"],
-    "type:contract": [sameTag],
-  },
+    "type:contract": [sameTag]
+  }
 };

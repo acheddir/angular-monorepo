@@ -5,7 +5,7 @@ import { RouterOutlet } from "@angular/router";
   selector: "app-root",
   template: `<router-outlet />`,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet]
 })
 export class App {
   protected readonly title = signal("app");

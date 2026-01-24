@@ -6,7 +6,7 @@ import {
   url,
   template,
   move,
-  mergeWith,
+  mergeWith
 } from "@angular-devkit/schematics";
 import { strings } from "@angular-devkit/core";
 import { DataSchematicSchema } from "./schema";
@@ -23,45 +23,45 @@ function calculateRelativePath(depth: number): string {
   return "../".repeat(depth);
 }
 
-function addProjectToAngularJson(
+function createProjectJson(
   tree: Tree,
   projectName: string,
   projectPath: string,
   prefix: string
 ): void {
-  const angularJsonPath = "/angular.json";
-  const angularJson = JSON.parse(tree.read(angularJsonPath)!.toString("utf-8"));
+  const projectJsonPath = `${projectPath}/project.json`;
 
-  if (!angularJson.projects[projectName]) {
-    angularJson.projects[projectName] = {
-      projectType: "library",
-      root: projectPath,
-      sourceRoot: `${projectPath}/src`,
-      prefix: prefix,
-      architect: {
-        build: {
-          builder: "@angular/build:ng-packagr",
-          configurations: {
-            production: {
-              tsConfig: `${projectPath}/tsconfig.lib.prod.json`,
-            },
-            development: {
-              tsConfig: `${projectPath}/tsconfig.lib.json`,
-            },
-          },
-          defaultConfiguration: "production",
-        },
-        test: {
-          builder: "@angular/build:unit-test",
-          options: {
-            tsConfig: `${projectPath}/tsconfig.spec.json`,
-          },
-        },
-      },
-    };
-
-    tree.overwrite(angularJsonPath, JSON.stringify(angularJson, null, 2) + "\n");
+  if (tree.exists(projectJsonPath)) {
+    return;
   }
+
+  const projectJson = {
+    name: projectName,
+    projectType: "library",
+    prefix: prefix,
+    architect: {
+      build: {
+        builder: "@angular/build:ng-packagr",
+        configurations: {
+          production: {
+            tsConfig: `${projectPath}/tsconfig.lib.prod.json`
+          },
+          development: {
+            tsConfig: `${projectPath}/tsconfig.lib.json`
+          }
+        },
+        defaultConfiguration: "production"
+      },
+      test: {
+        builder: "@angular/build:unit-test",
+        options: {
+          tsConfig: `${projectPath}/tsconfig.spec.json`
+        }
+      }
+    }
+  };
+
+  tree.create(projectJsonPath, JSON.stringify(projectJson, null, 2) + "\n");
 }
 
 function addPathAliasToTsConfig(tree: Tree, aliasPath: string, targetPath: string): void {
@@ -100,13 +100,13 @@ export function data(options: DataSchematicSchema): Rule {
         domain: domainName,
         app,
         relativePath,
-        prefix: app,
+        prefix: app
       }),
-      move(projectPath),
+      move(projectPath)
     ]);
 
-    // Add to angular.json
-    addProjectToAngularJson(tree, projectName, projectPath, app);
+    // Create project.json in the library directory
+    createProjectJson(tree, projectName, projectPath, app);
 
     // Add path alias
     addPathAliasToTsConfig(

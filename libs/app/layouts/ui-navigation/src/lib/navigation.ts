@@ -23,7 +23,7 @@ export interface NavItem {
       }
     </nav>
   `,
-  styles: ``,
+  styles: ``
 })
 export class Navigation {
   public items = input<NavItem[]>([]);

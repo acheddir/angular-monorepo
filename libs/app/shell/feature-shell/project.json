@@ -1,0 +1,25 @@
+{
+  "name": "feature-shell",
+  "projectType": "library",
+  "prefix": "app",
+  "architect": {
+    "build": {
+      "builder": "@angular/build:ng-packagr",
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/app/shell/feature-shell/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/app/shell/feature-shell/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "builder": "@angular/build:unit-test",
+      "options": {
+        "tsConfig": "libs/app/shell/feature-shell/tsconfig.spec.json"
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "ui-hero",
+  "projectType": "library",
+  "prefix": "app",
+  "architect": {
+    "build": {
+      "builder": "@angular/build:ng-packagr",
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/app/modules/home/ui-hero/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/app/modules/home/ui-hero/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "builder": "@angular/build:unit-test",
+      "options": {
+        "tsConfig": "libs/app/modules/home/ui-hero/tsconfig.spec.json"
+      }
+    }
+  }
+}

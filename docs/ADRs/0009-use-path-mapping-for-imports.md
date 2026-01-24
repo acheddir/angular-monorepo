@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted
+✅ Accepted
 
 ## Context
 
@@ -35,7 +35,9 @@ We will use TypeScript path mapping via `baseUrl` and `paths` in `tsconfig.json`
     "paths": {
       "@app/shell": ["./libs/app/shell/feature-shell/src/public-api.ts"],
       "@app/layouts": ["./libs/app/layouts/ui-layouts/src/public-api.ts"],
-      "@app/home/welcome": ["./libs/app/home/feature-welcome/src/public-api.ts"]
+      "@app/layouts/ui-navigation": ["./libs/app/layouts/ui-navigation/src/public-api.ts"],
+      "@app/home/feature-welcome": ["./libs/app/modules/home/feature-welcome/src/public-api.ts"],
+      "@app/home/ui-hero": ["./libs/app/modules/home/ui-hero/src/public-api.ts"]
     }
   }
 }
@@ -43,11 +45,13 @@ We will use TypeScript path mapping via `baseUrl` and `paths` in `tsconfig.json`
 
 ### Naming Convention
 
-Path aliases follow the pattern: `@{app}/<domain>/<library-name>`
+Path aliases follow the pattern: `@{app}/<domain>/<folder-name>`
 
 - `@{app}/` - Consistent prefix for all application code
 - `<domain>` - The domain or module (e.g., `home`, `layouts`, `shared`)
-- `<library-name>` - The specific library within the domain
+- `<folder-name>` - The library folder name (e.g., `feature-welcome`, `ui-hero`)
+
+> **Import paths match folder names** for consistency with tooling like Sheriff. For example, `@app/home/feature-welcome` maps directly to the `feature-welcome/` folder.
 
 ### Example Usage
 
@@ -55,10 +59,25 @@ Path aliases follow the pattern: `@{app}/<domain>/<library-name>`
 // ✅ Clean, readable imports with path mapping
 import { AppShellComponent } from "@app/shell";
 import { MainLayoutComponent } from "@app/layouts";
-import { WelcomeComponent } from "@app/home/welcome";
+import { Navigation } from "@app/layouts/ui-navigation";
+import { FeatureWelcome } from "@app/home/feature-welcome";
 
 // ❌ Avoid relative paths for cross-library imports
 import { AppShellComponent } from "../../../shell/feature-shell/src";
+```
+
+### Vitest Integration
+
+The `vite-tsconfig-paths` plugin allows Vitest to use the same path mappings without duplicating configuration:
+
+```typescript
+// vitest.config.ts
+import tsconfigPaths from "vite-tsconfig-paths";
+
+export default defineConfig({
+  plugins: [tsconfigPaths()]
+  // ...
+});
 ```
 
 ## Consequences

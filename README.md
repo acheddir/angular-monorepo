@@ -93,6 +93,35 @@ This creates:
 - `libs/app/modules/products/data/` - Data service for API calls
 - `libs/app/modules/products/types/` - TypeScript interfaces
 
+#### Routing and Navigation
+
+Both `domain` and `feature` schematics support automatic routing setup:
+
+```bash
+# Prompt for routing and navigation (interactive)
+ng g domain --app=app --domain=products --name=list
+
+# Add to routes only (feature accessible via URL)
+ng g domain --app=app --domain=products --name=list --routing
+
+# Add to both routes and navigation menu
+ng g domain --app=app --domain=products --name=list --routing --navigation
+
+# Add to navigation (automatically enables routing)
+ng g feature --app=app --domain=orders --name=checkout --navigation
+```
+
+**Routing behavior:**
+
+- `--routing` - Adds a lazy-loaded route to `libs/{app}/shell/feature-shell/src/lib/root-shell.routes.ts`
+  - Route path: `/{domain}/{feature-name}`
+  - Example: `/products/list`
+- `--navigation` - Adds a menu item to the navigation component in `libs/{app}/shell/feature-shell/src/lib/root-shell.ts`
+  - Automatically enables `--routing` if not already set
+- Without flags - Prompts interactively for routing first, then navigation (if routing is enabled)
+
+Use routing without navigation for features like detail pages that shouldn't appear in the main menu.
+
 ### Shared vs Domain Libraries
 
 Libraries can be generated in two locations:
@@ -109,6 +138,9 @@ Generate single libraries within a domain:
 ```bash
 # Feature library (feature-*)
 ng g @tools/schematics:feature --app=app --domain=products --name=detail
+
+# Feature with routing and navigation
+ng g feature --app=app --domain=products --name=list --routing --navigation
 
 # Data access library
 ng g @tools/schematics:data --app=app --domain=products
@@ -134,14 +166,14 @@ ng g @tools/schematics:util --app=app --name=date-helpers --shared
 
 ### Available Schematics
 
-| Schematic | Alias | Description                        | Output Path (Default)                         | Output Path (--shared)                    |
-| --------- | ----- | ---------------------------------- | --------------------------------------------- | ----------------------------------------- |
-| `domain`  | `d`   | Full domain (feature, data, types) | `libs/{app}/modules/{domain}/*`               | N/A                                       |
-| `feature` | `f`   | Single feature library             | `libs/{app}/modules/{domain}/feature-{name}/` | N/A                                       |
-| `data`    | `da`  | Data access library                | `libs/{app}/modules/{domain}/data/`           | N/A                                       |
-| `types`   | `t`   | Types/models library               | `libs/{app}/modules/{domain}/types/`          | `libs/{app}/shared/types/`                |
-| `ui`      | `u`   | UI component library               | `libs/{app}/modules/{domain}/ui-{name}/`      | `libs/{app}/shared/components/ui-{name}/` |
-| `util`    | `ut`  | Utility library                    | `libs/{app}/modules/{domain}/util-{name}/`    | `libs/{app}/shared/util-{name}/`          |
+| Schematic | Alias | Description                        | Flags                       | Output Path (Default)                         | Output Path (--shared)                    |
+| --------- | ----- | ---------------------------------- | --------------------------- | --------------------------------------------- | ----------------------------------------- |
+| `domain`  | `d`   | Full domain (feature, data, types) | `--routing`, `--navigation` | `libs/{app}/modules/{domain}/*`               | N/A                                       |
+| `feature` | `f`   | Single feature library             | `--routing`, `--navigation` | `libs/{app}/modules/{domain}/feature-{name}/` | N/A                                       |
+| `data`    | `da`  | Data access library                | -                           | `libs/{app}/modules/{domain}/data/`           | N/A                                       |
+| `types`   | `t`   | Types/models library               | `--shared`                  | `libs/{app}/modules/{domain}/types/`          | `libs/{app}/shared/types/`                |
+| `ui`      | `u`   | UI component library               | `--shared`                  | `libs/{app}/modules/{domain}/ui-{name}/`      | `libs/{app}/shared/components/ui-{name}/` |
+| `util`    | `ut`  | Utility library                    | `--shared`                  | `libs/{app}/modules/{domain}/util-{name}/`    | `libs/{app}/shared/util-{name}/`          |
 
 ### Generated Path Aliases
 
@@ -149,13 +181,13 @@ Each schematic automatically adds tsconfig path aliases:
 
 **Domain-specific Libraries (default):**
 
-| Library Type | Path Alias                    |
-| ------------ | ----------------------------- |
-| feature      | `@{app}/{domain}/{name}`      |
-| data         | `@{app}/{domain}/data`        |
-| types        | `@{app}/{domain}/types`       |
-| ui           | `@{app}/{domain}/ui-{name}`   |
-| util         | `@{app}/{domain}/util-{name}` |
+| Library Type | Path Alias                       |
+| ------------ | -------------------------------- |
+| feature      | `@{app}/{domain}/feature-{name}` |
+| data         | `@{app}/{domain}/data`           |
+| types        | `@{app}/{domain}/types`          |
+| ui           | `@{app}/{domain}/ui-{name}`      |
+| util         | `@{app}/{domain}/util-{name}`    |
 
 **Shared Libraries (with --shared flag):**
 
@@ -165,15 +197,17 @@ Each schematic automatically adds tsconfig path aliases:
 | ui           | `@{app}/shared/ui-{name}`   |
 | util         | `@{app}/shared/util-{name}` |
 
+> **Note:** Import paths match folder names for consistency with tooling (e.g., `@app/home/feature-welcome` maps to `libs/app/modules/home/feature-welcome/`).
+
 ### Existing Path Aliases
 
-| Alias                     | Library                                  |
-| ------------------------- | ---------------------------------------- |
-| `@app/shell`              | Shell feature (root component)           |
-| `@app/layouts`            | Layout components (Header, Main, Footer) |
-| `@app/layouts/navigation` | Navigation component                     |
-| `@app/home/welcome`       | Welcome page feature                     |
-| `@app/home/hero`          | Hero section component                   |
+| Alias                        | Library                                  |
+| ---------------------------- | ---------------------------------------- |
+| `@app/shell`                 | Shell feature (root component)           |
+| `@app/layouts`               | Layout components (Header, Main, Footer) |
+| `@app/layouts/ui-navigation` | Navigation component                     |
+| `@app/home/feature-welcome`  | Welcome page feature                     |
+| `@app/home/ui-hero`          | Hero section component                   |
 
 ## Architecture
 
@@ -221,15 +255,25 @@ Architecture Decision Records (ADRs) are available in the [`docs/ADRs/`](./docs/
 
 ## Configuration Files
 
-| File                   | Purpose                                    |
-| ---------------------- | ------------------------------------------ |
-| `angular.json`         | Angular CLI configuration                  |
-| `tsconfig.json`        | TypeScript configuration with path aliases |
-| `eslint.config.mjs`    | ESLint flat config                         |
-| `sheriff.config.ts`    | Module boundary rules                      |
-| `vitest.config.ts`     | Vitest test configuration                  |
-| `.prettierrc`          | Prettier formatting rules                  |
-| `commitlint.config.js` | Commit message rules                       |
+| File                   | Purpose                                         |
+| ---------------------- | ----------------------------------------------- |
+| `angular.json`         | Angular CLI configuration (application only)    |
+| `libs/**/project.json` | Distributed library configuration (per library) |
+| `tsconfig.json`        | TypeScript configuration with path aliases      |
+| `eslint.config.mjs`    | ESLint flat config                              |
+| `sheriff.config.ts`    | Module boundary rules                           |
+| `vitest.config.ts`     | Vitest test configuration (uses tsconfig paths) |
+| `.prettierrc`          | Prettier formatting rules                       |
+| `commitlint.config.js` | Commit message rules                            |
+
+### Distributed Library Configuration
+
+Each library has its own `project.json` file instead of being registered in `angular.json`. This approach:
+
+- **Scales better**: Adding libraries doesn't bloat the central config
+- **Improves maintainability**: Library config lives with the library code
+- **Enables parallel workflows**: Multiple developers can add libraries without merge conflicts
+- **Auto-discovery**: Angular CLI automatically discovers `project.json` files
 
 ## Requirements
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted
+✅ Accepted
 
 ## Context
 
@@ -41,9 +41,11 @@ ng g @tools/schematics:ui --app=app --name=button --shared  # Shared component
 1. **Create directory structure** following conventions
 2. **Generate boilerplate code** (components, services, types)
 3. **Add path aliases** to tsconfig.json automatically
-4. **Register projects** in angular.json
+4. **Create project.json** in the library directory (distributed configuration)
 5. **Create barrel exports** for public API
 6. **Enforce naming conventions** (prefixes, casing)
+
+> **Note:** Schematics create a `project.json` file in each library directory instead of registering projects in the central `angular.json`. This distributed approach scales better and reduces merge conflicts.
 
 ### Why @angular-devkit/schematics:
 

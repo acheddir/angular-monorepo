@@ -11,8 +11,8 @@
       "@app/shell": ["./libs/app/shell/feature-shell/src/public-api.ts"],
       "@app/layouts": ["./libs/app/layouts/ui-layouts/src/public-api.ts"],
       "@app/layouts/navigation": ["./libs/app/layouts/ui-navigation/src/public-api.ts"],
-      "@app/home/welcome": ["./libs/app/modules/home/feature-welcome/src/public-api.ts"],
-      "@app/home/hero": ["./libs/app/modules/home/ui-hero/src/public-api.ts"],
+      "@app/home/feature-welcome": ["./libs/app/modules/home/feature-welcome/src/public-api.ts"],
+      "@app/home/ui-hero": ["./libs/app/modules/home/ui-hero/src/public-api.ts"],
       "@tools/schematics": ["./tools/schematics/public-api.ts"]
     },
     "skipLibCheck": true,

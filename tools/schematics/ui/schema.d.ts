@@ -3,4 +3,5 @@ export interface UiSchematicSchema {
   domain?: string;
   name: string;
   shared?: boolean;
+  help?: boolean;
 }

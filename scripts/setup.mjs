@@ -17,7 +17,7 @@ import {
   rmSync,
   existsSync,
   readdirSync,
-  statSync,
+  statSync
 } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -28,7 +28,7 @@ const ROOT_DIR = join(__dirname, "..");
 
 const rl = createInterface({
   input: process.stdin,
-  output: process.stdout,
+  output: process.stdout
 });
 
 function question(prompt) {
@@ -160,7 +160,7 @@ async function main() {
     "sheriff.config.ts",
     "eslint.config.mjs",
     "README.md",
-    ".github/TEMPLATE_SETUP.md",
+    ".github/TEMPLATE_SETUP.md"
   ];
 
   // Step 1: Update configuration files in root

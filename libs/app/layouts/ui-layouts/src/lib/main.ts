@@ -10,6 +10,6 @@ import { Component } from "@angular/core";
       </div>
     </main>
   `,
-  styles: ``,
+  styles: ``
 })
 export class Main {}
