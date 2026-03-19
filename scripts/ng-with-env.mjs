@@ -38,7 +38,7 @@ for (const [key, value] of Object.entries(merged)) {
 }
 
 const ngArgs = process.argv.slice(2);
-const result = spawnSync("npx", ["ng", ...ngArgs, ...defineFlags], {
+const result = spawnSync("pnpm", ["exec", "ng", ...ngArgs, ...defineFlags], {
   stdio: "inherit",
   shell: true,
   cwd: ROOT
