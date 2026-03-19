@@ -1,0 +1,25 @@
+{
+  "name": "shared-types",
+  "projectType": "library",
+  "prefix": "app",
+  "architect": {
+    "build": {
+      "builder": "@angular/build:ng-packagr",
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/app/shared/types/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/app/shared/types/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "builder": "@angular/build:unit-test",
+      "options": {
+        "tsConfig": "libs/app/shared/types/tsconfig.spec.json"
+      }
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { Component, input } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { provideConfig } from "@app/shared/util-config";
 
 import { Hero } from "../../../ui-hero/src/public-api";
 import { FeatureWelcome } from "./feature-welcome";
@@ -19,7 +20,8 @@ describe("FeatureWelcome", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FeatureWelcome]
+      imports: [FeatureWelcome],
+      providers: [provideConfig()]
     })
       .overrideComponent(FeatureWelcome, {
         remove: { imports: [Hero] },

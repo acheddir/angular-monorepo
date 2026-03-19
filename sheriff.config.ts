@@ -6,7 +6,9 @@ export const config: SheriffConfig = {
   modules: {
     apps: {
       "<app>": {
-        src: ["type:app"]
+        src: {
+          environments: ["type:app"]
+        }
       }
     },
     libs: {

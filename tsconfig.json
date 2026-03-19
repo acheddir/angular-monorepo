@@ -8,12 +8,15 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
+      "@app/environment": ["./apps/app/src/environments/public-api.ts"],
       "@app/shell": ["./libs/app/shell/feature-shell/src/public-api.ts"],
       "@app/layouts": ["./libs/app/layouts/ui-layouts/src/public-api.ts"],
       "@app/layouts/navigation": ["./libs/app/layouts/ui-navigation/src/public-api.ts"],
       "@app/home/feature-welcome": ["./libs/app/modules/home/feature-welcome/src/public-api.ts"],
       "@app/home/ui-hero": ["./libs/app/modules/home/ui-hero/src/public-api.ts"],
-      "@tools/schematics": ["./tools/schematics/public-api.ts"]
+      "@tools/schematics": ["./tools/schematics/public-api.ts"],
+      "@app/shared/util-config": ["./libs/app/shared/util-config/src/public-api.ts"],
+      "@app/shared/types": ["./libs/app/shared/types/src/public-api.ts"]
     },
     "skipLibCheck": true,
     "isolatedModules": true,

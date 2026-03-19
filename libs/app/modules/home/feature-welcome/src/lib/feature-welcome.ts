@@ -1,12 +1,14 @@
 import { Component } from "@angular/core";
-import { Hero } from "../../../ui-hero/src/public-api";
+import { injectConfig } from "@app/shared/util-config";
+import { Config } from "@app/shared/types";
+import { Hero } from "@app/home/ui-hero";
 
 @Component({
   selector: "app-feature-welcome",
   imports: [Hero],
   template: `
     <app-hero
-      title="Welcome "
+      title="Welcome {{ apiUrl }}"
       subtitle="Build amazing applications with this Angular monorepo starter template"
     >
       <a
@@ -25,4 +27,8 @@ import { Hero } from "../../../ui-hero/src/public-api";
   `,
   styles: ``
 })
-export class FeatureWelcome {}
+export class FeatureWelcome {
+  private readonly cfg = injectConfig<Config>();
+
+  public readonly apiUrl = this.cfg.apiUrl;
+}
