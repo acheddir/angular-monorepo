@@ -1,16 +1,8 @@
-import { EnvironmentProviders, inject, makeEnvironmentProviders } from "@angular/core";
-import { CONFIG_OPTIONS, ConfigOptions, ConfigService } from "./config";
+import { EnvironmentProviders, makeEnvironmentProviders } from "@angular/core";
+import { AppConfig, appConfigSchema } from "./config.schema";
+import { CONFIG_OPTIONS, ConfigService } from "./config.service";
 
-export function provideConfig<T extends ConfigOptions>(values: T = {} as T): EnvironmentProviders {
-  return makeEnvironmentProviders([
-    {
-      provide: CONFIG_OPTIONS,
-      useValue: values
-    },
-    ConfigService
-  ]);
-}
-
-export function injectConfig<T extends ConfigOptions>(): ConfigService<T> & T {
-  return inject(ConfigService) as unknown as ConfigService<T> & T;
+export function provideConfig(values: AppConfig): EnvironmentProviders {
+  const parsed = appConfigSchema.parse(values); // throws ZedError if invalid
+  return makeEnvironmentProviders([ConfigService, { provide: CONFIG_OPTIONS, useValue: parsed }]);
 }

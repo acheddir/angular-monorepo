@@ -1,3 +1,16 @@
 packages:
   - "libs/*"
   - "apps/*"
+allowedDeprecatedVersions:
+  "@angular/animations": "*"
+  tar: "*"
+  tsconfck: "*"
+peerDependencyRules:
+  allowedVersions:
+    typescript: "6"
+allowBuilds:
+  "@parcel/watcher": true
+  esbuild: true
+  less: true
+  lmdb: true
+  msgpackr-extract: true

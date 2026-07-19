@@ -86,7 +86,7 @@ export const config: SheriffConfig = {
     "type:app": ["*"],
     "type:shell": ["type:feature", "type:ui", "type:util"],
     "type:feature": [sameTag, "type:data", "type:ui", "type:util", "type:types", "type:contract"],
-    "type:data": [sameTag, "type:ui", "type:util", "type:types", "type:contract"],
+    "type:data": [sameTag, "type:util", "type:types", "type:contract"],
     "type:ui": [sameTag, "type:util", "type:types", "type:contract"],
     "type:api": [sameTag, "type:util", "type:contract", "type:schema"],
     "type:schema": ["type:types", "type:contract"],

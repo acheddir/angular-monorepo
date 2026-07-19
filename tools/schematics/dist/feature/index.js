@@ -178,8 +178,8 @@ function feature(options) {
                     type: "confirm",
                     name: "routing",
                     message: "Add route to shell?",
-                    default: false,
-                },
+                    default: false
+                }
             ]);
             routing = routingAnswer.routing;
             // If routing is true, also ask about navigation
@@ -189,8 +189,8 @@ function feature(options) {
                         type: "confirm",
                         name: "navigation",
                         message: "Add to navigation menu?",
-                        default: false,
-                    },
+                        default: false
+                    }
                 ]);
                 navigation = navAnswer.navigation;
             }
@@ -203,8 +203,8 @@ function feature(options) {
                     type: "confirm",
                     name: "navigation",
                     message: "Add to navigation menu?",
-                    default: false,
-                },
+                    default: false
+                }
             ]);
             navigation = navAnswer.navigation;
         }

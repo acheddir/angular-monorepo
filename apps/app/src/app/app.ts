@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
+import { AppConfig, ConfigService } from "@app/shared/util-config";
 
 @Component({
   selector: "app-root",
@@ -8,5 +9,10 @@ import { RouterOutlet } from "@angular/router";
   imports: [RouterOutlet]
 })
 export class App {
-  protected readonly title = signal("app");
+  private readonly configSvc = inject<ConfigService<AppConfig>>(ConfigService);
+
+  constructor() {
+    const apiUrl = this.configSvc.get("apiUrl");
+    console.log(apiUrl);
+  }
 }
